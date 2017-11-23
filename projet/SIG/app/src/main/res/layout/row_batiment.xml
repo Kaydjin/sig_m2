@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/nom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Nom"
+            android:textColor="@android:color/black"
+            android:textStyle="bold"
+            app:layout_constraintTop_toBottomOf="parent"
+            app:layout_constraintLeft_toRightOf="parent"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="5dp"/>
+
+        <TextView
+            android:id="@+id/type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Type"
+            android:textColor="@android:color/black"
+            app:layout_constraintTop_toBottomOf="@+id/nom"
+            app:layout_constraintLeft_toRightOf="parent"
+            android:layout_marginLeft="30dp"/>
+
+        <TextView
+            android:id="@+id/ville"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ville"
+            android:textColor="@android:color/black"
+            app:layout_constraintTop_toBottomOf="@+id/nom"
+            app:layout_constraintLeft_toRightOf="@+id/type"
+            android:layout_marginLeft="10dp"/>
+
+        <TextView
+            android:id="@+id/longitude"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Longitude"
+            android:textColor="@android:color/black"
+            app:layout_constraintTop_toBottomOf="@+id/type"
+            app:layout_constraintLeft_toRightOf="parent"
+            android:layout_marginLeft="30dp"/>
+
+        <TextView
+            android:id="@+id/latitude"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/longitude"
+            android:layout_right="@+id/longitude"
+            android:text="Latitude"
+            android:textColor="@android:color/black"
+            app:layout_constraintTop_toBottomOf="@+id/type"
+            app:layout_constraintLeft_toRightOf="@+id/longitude"
+            android:layout_marginLeft="10dp"/>
+
+        <TextView
+            android:id="@+id/telephone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Telephone"
+            android:textColor="@android:color/black"
+            app:layout_constraintTop_toBottomOf="@+id/type"
+            app:layout_constraintLeft_toRightOf="@+id/latitude"
+            android:layout_marginLeft="10dp" />
+
+        <TextView
+            android:id="@+id/adresse"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/nom"
+            android:layout_below="@+id/nom"
+            android:text="Adresse"
+            android:textColor="@android:color/black"
+            app:layout_constraintTop_toBottomOf="@+id/latitude"
+            app:layout_constraintLeft_toRightOf="parent"
+            android:layout_marginLeft="30dp" />
+
+    </android.support.constraint.ConstraintLayout>
+
+</LinearLayout>
