@@ -8,6 +8,7 @@ import android.util.Log;
 import com.sig.etu.sig.bdd.tables.BatimentTable;
 import com.sig.etu.sig.bdd.tables.MetierTable;
 import com.sig.etu.sig.bdd.tables.PersonneTable;
+import com.sig.etu.sig.bdd.tables.TypeBatimentTable;
 import com.sig.etu.sig.bdd.tables.UtilisateurTable;
 import com.sig.etu.sig.bdd.tables.VilleTable;
 
@@ -27,6 +28,7 @@ public class BDDHelper extends SQLiteOpenHelper {
     private static final String[] DATABASE_CREATE = {
             VilleTable.SQL_TABLE,
             MetierTable.SQL_TABLE,
+            TypeBatimentTable.SQL_TABLE,
             BatimentTable.SQL_TABLE,
             PersonneTable.SQL_TABLE,
             UtilisateurTable.SQL_TABLE
@@ -68,8 +70,10 @@ public class BDDHelper extends SQLiteOpenHelper {
             db.beginTransaction();
             db.execSQL("DROP TABLE IF EXISTS "+ PersonneTable.NAME_TABLE);
             db.execSQL("DROP TABLE IF EXISTS "+ BatimentTable.NAME_TABLE);
+            db.execSQL("DROP TABLE IF EXISTS "+ TypeBatimentTable.NAME_TABLE);
             db.execSQL("DROP TABLE IF EXISTS "+ MetierTable.NAME_TABLE);
             db.execSQL("DROP TABLE IF EXISTS "+ VilleTable.NAME_TABLE);
+            db.execSQL("DROP TABLE IF EXISTS "+ UtilisateurTable.NAME_TABLE);
             db.setTransactionSuccessful();
         }finally{
             db.endTransaction();

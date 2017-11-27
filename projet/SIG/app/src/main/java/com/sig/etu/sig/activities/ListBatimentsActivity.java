@@ -49,14 +49,15 @@ public class ListBatimentsActivity extends AppCompatActivity {
         adapter = new BatimentListAdapter(ListBatimentsActivity.this, entries);
         mListView.setAdapter(adapter);
 
-        /*FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.retour);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(ListeActivity.this, SaisieEntry.class);
-                startActivityForResult(intent, SaisieEntry.REQUEST_CODE);
+                Intent intent = new Intent(ListBatimentsActivity.this, MainActivity.class);
+                startActivity(intent);
+                finish();
             }
-        });*/
+        });
 
 
 

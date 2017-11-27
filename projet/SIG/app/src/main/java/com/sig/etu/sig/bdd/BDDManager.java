@@ -41,14 +41,6 @@ public class BDDManager {
     private TypeBatimentDao typeBatimentDao;
     private UtilisateurDao utilisateurDao;
     private VilleDao villeDao;
-
-    //If we have multiple tables, all the tables must give their list of columns names.
-    private String[][] allColumns = {
-            VilleTable.allcolumns,
-            MetierTable.allcolumns,
-            BatimentTable.allcolumns,
-            PersonneTable.allcolumns
-    };
     private boolean open;
 
     /**
@@ -90,6 +82,9 @@ public class BDDManager {
         open = false;
     }
 
+    /**
+     * Destory and create (PRODUCTION MODE BDD)
+     */
     public void allRemove(){
         database = bddHelper.getWritableDatabase();
         bddHelper.allRemove(database);
@@ -143,7 +138,7 @@ public class BDDManager {
 
     public Batiment createBatiment(int id_type, int id_ville, double latitude, double longitude,
                                     String nom, String adresse, String telephone){
-        return createBatiment(id_type, id_ville, latitude, longitude, nom, adresse, telephone);
+        return batimentDao.create(id_type, id_ville, latitude, longitude, nom, adresse, telephone);
     }
     public Metier createMetier(String nom){
         return metierDao.create(nom);

@@ -8,4 +8,61 @@
     tools:context="com.sig.etu.sig.activities.MainActivity"
     tools:showIn="@layout/activity_main">
 
+    <Button
+        android:id="@+id/generate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Generate"
+        app:layout_constraintTop_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="parent" />
+
+    <Button
+        android:id="@+id/batiments"
+        android:layout_width="118dp"
+        android:layout_height="36dp"
+        android:text="Batiments"
+        app:layout_constraintTop_toBottomOf="@+id/generate"
+        app:layout_constraintLeft_toRightOf="parent"
+        tools:layout_editor_absoluteX="0dp"
+        android:layout_marginTop="-567dp" />
+
+    <Button
+        android:id="@+id/metiers"
+        android:layout_width="105dp"
+        android:layout_height="36dp"
+        android:text="Metiers"
+        app:layout_constraintTop_toBottomOf="@+id/batiments"
+        app:layout_constraintLeft_toRightOf="parent"
+        tools:layout_editor_absoluteX="0dp"
+        android:layout_marginTop="0dp" />
+
+    <Button
+        android:id="@+id/personnes"
+        android:layout_width="112dp"
+        android:layout_height="36dp"
+        android:text="Personnes"
+        app:layout_constraintTop_toBottomOf="@+id/metiers"
+        app:layout_constraintLeft_toRightOf="parent"
+        tools:layout_editor_absoluteX="0dp"
+        android:layout_marginTop="0dp" />
+
+    <Button
+        android:id="@+id/types_batiments"
+        android:layout_width="103dp"
+        android:layout_height="37dp"
+        android:text="Types batiments"
+        app:layout_constraintLeft_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/personnes"
+        tools:layout_editor_absoluteX="0dp"
+        android:layout_marginTop="0dp" />
+
+    <Button
+        android:id="@+id/villes"
+        android:layout_width="79dp"
+        android:layout_height="33dp"
+        android:text="Villes"
+        app:layout_constraintLeft_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/types_batiments"
+        tools:layout_editor_absoluteX="0dp"
+        android:layout_marginTop="0dp" />
 </android.support.constraint.ConstraintLayout>

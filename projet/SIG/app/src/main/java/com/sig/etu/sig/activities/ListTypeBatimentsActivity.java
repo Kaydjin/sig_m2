@@ -3,11 +3,13 @@ package com.sig.etu.sig.activities;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ListView;
 
 import com.sig.etu.sig.R;
@@ -46,14 +48,15 @@ public class ListTypeBatimentsActivity extends AppCompatActivity {
         adapter = new TypeBatimentListAdapter(ListTypeBatimentsActivity.this, entries);
         mListView.setAdapter(adapter);
 
-        /*FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.retour);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(ListeActivity.this, SaisieEntry.class);
-                startActivityForResult(intent, SaisieEntry.REQUEST_CODE);
+                Intent intent = new Intent(ListTypeBatimentsActivity.this, MainActivity.class);
+                startActivity(intent);
+                finish();
             }
-        });*/
+        });
 
 
 
