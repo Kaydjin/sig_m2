@@ -1,0 +1,10 @@
+[
+    {
+        "merged": "/home/vogel/Documents/learning/projet_autres/m2/sig_m2/projet/SIG/app/build/intermediates/res/merged/debug/mipmap-hdpi/ic_launcher.png",
+        "source": "/home/vogel/Documents/learning/projet_autres/m2/sig_m2/projet/SIG/app/src/main/res/mipmap-hdpi/ic_launcher.png"
+    },
+    {
+        "merged": "/home/vogel/Documents/learning/projet_autres/m2/sig_m2/projet/SIG/app/build/intermediates/res/merged/debug/mipmap-hdpi/ic_launcher_round.png",
+        "source": "/home/vogel/Documents/learning/projet_autres/m2/sig_m2/projet/SIG/app/src/main/res/mipmap-hdpi/ic_launcher_round.png"
+    }
+]

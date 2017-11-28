@@ -1,0 +1,46 @@
+[
+    {
+        "merged": "/home/vogel/Documents/learning/projet_autres/m2/sig_m2/projet/SIG/app/build/intermediates/res/merged/debug/color-v23/design_tint_password_toggle.xml",
+        "source": "/home/vogel/.android/build-cache/f0ea0e3d7d52d9214933ad029b16b045463f9c0c/output/res/color-v23/design_tint_password_toggle.xml"
+    },
+    {
+        "merged": "/home/vogel/Documents/learning/projet_autres/m2/sig_m2/projet/SIG/app/build/intermediates/res/merged/debug/color-v23/abc_tint_switch_thumb.xml",
+        "source": "/home/vogel/.android/build-cache/9c94bd053e8ab2726d2d2dc81a8382ca6415d60f/output/res/color-v23/abc_tint_switch_thumb.xml"
+    },
+    {
+        "merged": "/home/vogel/Documents/learning/projet_autres/m2/sig_m2/projet/SIG/app/build/intermediates/res/merged/debug/color-v23/abc_tint_spinner.xml",
+        "source": "/home/vogel/.android/build-cache/9c94bd053e8ab2726d2d2dc81a8382ca6415d60f/output/res/color-v23/abc_tint_spinner.xml"
+    },
+    {
+        "merged": "/home/vogel/Documents/learning/projet_autres/m2/sig_m2/projet/SIG/app/build/intermediates/res/merged/debug/color-v23/abc_tint_edittext.xml",
+        "source": "/home/vogel/.android/build-cache/9c94bd053e8ab2726d2d2dc81a8382ca6415d60f/output/res/color-v23/abc_tint_edittext.xml"
+    },
+    {
+        "merged": "/home/vogel/Documents/learning/projet_autres/m2/sig_m2/projet/SIG/app/build/intermediates/res/merged/debug/color-v23/abc_btn_colored_borderless_text_material.xml",
+        "source": "/home/vogel/.android/build-cache/9c94bd053e8ab2726d2d2dc81a8382ca6415d60f/output/res/color-v23/abc_btn_colored_borderless_text_material.xml"
+    },
+    {
+        "merged": "/home/vogel/Documents/learning/projet_autres/m2/sig_m2/projet/SIG/app/build/intermediates/res/merged/debug/color-v23/abc_color_highlight_material.xml",
+        "source": "/home/vogel/.android/build-cache/9c94bd053e8ab2726d2d2dc81a8382ca6415d60f/output/res/color-v23/abc_color_highlight_material.xml"
+    },
+    {
+        "merged": "/home/vogel/Documents/learning/projet_autres/m2/sig_m2/projet/SIG/app/build/intermediates/res/merged/debug/color-v23/abc_tint_default.xml",
+        "source": "/home/vogel/.android/build-cache/9c94bd053e8ab2726d2d2dc81a8382ca6415d60f/output/res/color-v23/abc_tint_default.xml"
+    },
+    {
+        "merged": "/home/vogel/Documents/learning/projet_autres/m2/sig_m2/projet/SIG/app/build/intermediates/res/merged/debug/color-v23/abc_tint_switch_track.xml",
+        "source": "/home/vogel/.android/build-cache/9c94bd053e8ab2726d2d2dc81a8382ca6415d60f/output/res/color-v23/abc_tint_switch_track.xml"
+    },
+    {
+        "merged": "/home/vogel/Documents/learning/projet_autres/m2/sig_m2/projet/SIG/app/build/intermediates/res/merged/debug/color-v23/abc_tint_seek_thumb.xml",
+        "source": "/home/vogel/.android/build-cache/9c94bd053e8ab2726d2d2dc81a8382ca6415d60f/output/res/color-v23/abc_tint_seek_thumb.xml"
+    },
+    {
+        "merged": "/home/vogel/Documents/learning/projet_autres/m2/sig_m2/projet/SIG/app/build/intermediates/res/merged/debug/color-v23/abc_tint_btn_checkable.xml",
+        "source": "/home/vogel/.android/build-cache/9c94bd053e8ab2726d2d2dc81a8382ca6415d60f/output/res/color-v23/abc_tint_btn_checkable.xml"
+    },
+    {
+        "merged": "/home/vogel/Documents/learning/projet_autres/m2/sig_m2/projet/SIG/app/build/intermediates/res/merged/debug/color-v23/abc_btn_colored_text_material.xml",
+        "source": "/home/vogel/.android/build-cache/9c94bd053e8ab2726d2d2dc81a8382ca6415d60f/output/res/color-v23/abc_btn_colored_text_material.xml"
+    }
+]

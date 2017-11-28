@@ -1,0 +1,143 @@
+-- Merging decision tree log ---
+manifest
+ADDED from /home/vogel/Documents/learning/projet_autres/m2/sig_m2/projet/SIG/app/src/main/AndroidManifest.xml:2:1-45:12
+	package
+		ADDED from /home/vogel/Documents/learning/projet_autres/m2/sig_m2/projet/SIG/app/src/main/AndroidManifest.xml:3:5-30
+		INJECTED from /home/vogel/Documents/learning/projet_autres/m2/sig_m2/projet/SIG/app/src/main/AndroidManifest.xml
+		INJECTED from /home/vogel/Documents/learning/projet_autres/m2/sig_m2/projet/SIG/app/src/main/AndroidManifest.xml
+	android:versionName
+		INJECTED from /home/vogel/Documents/learning/projet_autres/m2/sig_m2/projet/SIG/app/src/main/AndroidManifest.xml
+		INJECTED from /home/vogel/Documents/learning/projet_autres/m2/sig_m2/projet/SIG/app/src/main/AndroidManifest.xml
+	xmlns:android
+		ADDED from /home/vogel/Documents/learning/projet_autres/m2/sig_m2/projet/SIG/app/src/main/AndroidManifest.xml:2:11-69
+	android:versionCode
+		INJECTED from /home/vogel/Documents/learning/projet_autres/m2/sig_m2/projet/SIG/app/src/main/AndroidManifest.xml
+		INJECTED from /home/vogel/Documents/learning/projet_autres/m2/sig_m2/projet/SIG/app/src/main/AndroidManifest.xml
+application
+ADDED from /home/vogel/Documents/learning/projet_autres/m2/sig_m2/projet/SIG/app/src/main/AndroidManifest.xml:5:5-43:19
+MERGED from [com.android.support.constraint:constraint-layout:1.0.2] /home/vogel/.android/build-cache/325cdaee9af4af3ba0d521490c7981388eea940f/output/AndroidManifest.xml:9:5-20
+MERGED from [com.android.support:design:26.0.0-alpha1] /home/vogel/.android/build-cache/f0ea0e3d7d52d9214933ad029b16b045463f9c0c/output/AndroidManifest.xml:29:5-20
+MERGED from [com.android.support:appcompat-v7:26.0.0-alpha1] /home/vogel/.android/build-cache/9c94bd053e8ab2726d2d2dc81a8382ca6415d60f/output/AndroidManifest.xml:29:5-20
+MERGED from [com.android.support:animated-vector-drawable:26.0.0-alpha1] /home/vogel/.android/build-cache/12ce88ccae5e2fa7101785d25742b878426cf64c/output/AndroidManifest.xml:26:5-20
+MERGED from [com.android.support:support-vector-drawable:26.0.0-alpha1] /home/vogel/.android/build-cache/a876318f64a7eb5841f83e0e6302ed4775b59062/output/AndroidManifest.xml:26:5-20
+MERGED from [com.android.support:transition:26.0.0-alpha1] /home/vogel/.android/build-cache/8fd45891d0aae1f10072c4854dd1e1569d059c73/output/AndroidManifest.xml:26:5-20
+MERGED from [com.android.support:support-v4:26.0.0-alpha1] /home/vogel/.android/build-cache/1af60e6694701f17d7484d270b6a9d666e91203e/output/AndroidManifest.xml:29:5-20
+MERGED from [com.android.support:support-media-compat:26.0.0-alpha1] /home/vogel/.android/build-cache/f57e51720e54d00384a1a20f66939f0f42550d00/output/AndroidManifest.xml:29:5-20
+MERGED from [com.android.support:support-fragment:26.0.0-alpha1] /home/vogel/.android/build-cache/1bc36f0ed9607622807656c60d9004b032b6a1f1/output/AndroidManifest.xml:29:5-20
+MERGED from [com.android.support:support-core-ui:26.0.0-alpha1] /home/vogel/.android/build-cache/2444e9bc17214fb52b62792b348567befc4717cc/output/AndroidManifest.xml:29:5-20
+MERGED from [com.android.support:support-core-utils:26.0.0-alpha1] /home/vogel/.android/build-cache/c22c85dc6d8c47c0d00d38dff57bd1791779291b/output/AndroidManifest.xml:29:5-20
+MERGED from [com.android.support:support-compat:26.0.0-alpha1] /home/vogel/.android/build-cache/197a9de0e54c5f64619c03d607f6c19323fd2251/output/AndroidManifest.xml:29:5-20
+	android:label
+		ADDED from /home/vogel/Documents/learning/projet_autres/m2/sig_m2/projet/SIG/app/src/main/AndroidManifest.xml:8:9-41
+	android:supportsRtl
+		ADDED from /home/vogel/Documents/learning/projet_autres/m2/sig_m2/projet/SIG/app/src/main/AndroidManifest.xml:10:9-35
+	android:roundIcon
+		ADDED from /home/vogel/Documents/learning/projet_autres/m2/sig_m2/projet/SIG/app/src/main/AndroidManifest.xml:9:9-54
+	android:allowBackup
+		ADDED from /home/vogel/Documents/learning/projet_autres/m2/sig_m2/projet/SIG/app/src/main/AndroidManifest.xml:6:9-35
+	android:icon
+		ADDED from /home/vogel/Documents/learning/projet_autres/m2/sig_m2/projet/SIG/app/src/main/AndroidManifest.xml:7:9-43
+	android:theme
+		ADDED from /home/vogel/Documents/learning/projet_autres/m2/sig_m2/projet/SIG/app/src/main/AndroidManifest.xml:11:9-40
+activity#com.sig.etu.sig.SplashActivity
+ADDED from /home/vogel/Documents/learning/projet_autres/m2/sig_m2/projet/SIG/app/src/main/AndroidManifest.xml:12:9-18:20
+	android:name
+		ADDED from /home/vogel/Documents/learning/projet_autres/m2/sig_m2/projet/SIG/app/src/main/AndroidManifest.xml:12:19-49
+intent-filter#android.intent.action.MAIN+android.intent.category.LAUNCHER
+ADDED from /home/vogel/Documents/learning/projet_autres/m2/sig_m2/projet/SIG/app/src/main/AndroidManifest.xml:13:13-17:29
+action#android.intent.action.MAIN
+ADDED from /home/vogel/Documents/learning/projet_autres/m2/sig_m2/projet/SIG/app/src/main/AndroidManifest.xml:14:17-69
+	android:name
+		ADDED from /home/vogel/Documents/learning/projet_autres/m2/sig_m2/projet/SIG/app/src/main/AndroidManifest.xml:14:25-66
+category#android.intent.category.LAUNCHER
+ADDED from /home/vogel/Documents/learning/projet_autres/m2/sig_m2/projet/SIG/app/src/main/AndroidManifest.xml:16:17-77
+	android:name
+		ADDED from /home/vogel/Documents/learning/projet_autres/m2/sig_m2/projet/SIG/app/src/main/AndroidManifest.xml:16:27-74
+activity#com.sig.etu.sig.activities.MainActivity
+ADDED from /home/vogel/Documents/learning/projet_autres/m2/sig_m2/projet/SIG/app/src/main/AndroidManifest.xml:19:9-22:68
+	android:label
+		ADDED from /home/vogel/Documents/learning/projet_autres/m2/sig_m2/projet/SIG/app/src/main/AndroidManifest.xml:21:13-56
+	android:theme
+		ADDED from /home/vogel/Documents/learning/projet_autres/m2/sig_m2/projet/SIG/app/src/main/AndroidManifest.xml:22:13-56
+	android:name
+		ADDED from /home/vogel/Documents/learning/projet_autres/m2/sig_m2/projet/SIG/app/src/main/AndroidManifest.xml:20:13-52
+activity#com.sig.etu.sig.activities.ListBatimentsActivity
+ADDED from /home/vogel/Documents/learning/projet_autres/m2/sig_m2/projet/SIG/app/src/main/AndroidManifest.xml:23:9-26:59
+	android:label
+		ADDED from /home/vogel/Documents/learning/projet_autres/m2/sig_m2/projet/SIG/app/src/main/AndroidManifest.xml:25:13-44
+	android:theme
+		ADDED from /home/vogel/Documents/learning/projet_autres/m2/sig_m2/projet/SIG/app/src/main/AndroidManifest.xml:26:13-56
+	android:name
+		ADDED from /home/vogel/Documents/learning/projet_autres/m2/sig_m2/projet/SIG/app/src/main/AndroidManifest.xml:24:13-61
+activity#com.sig.etu.sig.activities.ListMetiersActivity
+ADDED from /home/vogel/Documents/learning/projet_autres/m2/sig_m2/projet/SIG/app/src/main/AndroidManifest.xml:27:9-30:59
+	android:label
+		ADDED from /home/vogel/Documents/learning/projet_autres/m2/sig_m2/projet/SIG/app/src/main/AndroidManifest.xml:29:13-42
+	android:theme
+		ADDED from /home/vogel/Documents/learning/projet_autres/m2/sig_m2/projet/SIG/app/src/main/AndroidManifest.xml:30:13-56
+	android:name
+		ADDED from /home/vogel/Documents/learning/projet_autres/m2/sig_m2/projet/SIG/app/src/main/AndroidManifest.xml:28:13-59
+activity#com.sig.etu.sig.activities.ListPersonnesActivity
+ADDED from /home/vogel/Documents/learning/projet_autres/m2/sig_m2/projet/SIG/app/src/main/AndroidManifest.xml:31:9-34:59
+	android:label
+		ADDED from /home/vogel/Documents/learning/projet_autres/m2/sig_m2/projet/SIG/app/src/main/AndroidManifest.xml:33:13-44
+	android:theme
+		ADDED from /home/vogel/Documents/learning/projet_autres/m2/sig_m2/projet/SIG/app/src/main/AndroidManifest.xml:34:13-56
+	android:name
+		ADDED from /home/vogel/Documents/learning/projet_autres/m2/sig_m2/projet/SIG/app/src/main/AndroidManifest.xml:32:13-61
+activity#com.sig.etu.sig.activities.ListTypeBatimentsActivity
+ADDED from /home/vogel/Documents/learning/projet_autres/m2/sig_m2/projet/SIG/app/src/main/AndroidManifest.xml:35:9-38:59
+	android:label
+		ADDED from /home/vogel/Documents/learning/projet_autres/m2/sig_m2/projet/SIG/app/src/main/AndroidManifest.xml:37:13-50
+	android:theme
+		ADDED from /home/vogel/Documents/learning/projet_autres/m2/sig_m2/projet/SIG/app/src/main/AndroidManifest.xml:38:13-56
+	android:name
+		ADDED from /home/vogel/Documents/learning/projet_autres/m2/sig_m2/projet/SIG/app/src/main/AndroidManifest.xml:36:13-65
+activity#com.sig.etu.sig.activities.ListVillesActivity
+ADDED from /home/vogel/Documents/learning/projet_autres/m2/sig_m2/projet/SIG/app/src/main/AndroidManifest.xml:39:9-42:59
+	android:label
+		ADDED from /home/vogel/Documents/learning/projet_autres/m2/sig_m2/projet/SIG/app/src/main/AndroidManifest.xml:41:13-41
+	android:theme
+		ADDED from /home/vogel/Documents/learning/projet_autres/m2/sig_m2/projet/SIG/app/src/main/AndroidManifest.xml:42:13-56
+	android:name
+		ADDED from /home/vogel/Documents/learning/projet_autres/m2/sig_m2/projet/SIG/app/src/main/AndroidManifest.xml:40:13-58
+uses-sdk
+INJECTED from /home/vogel/Documents/learning/projet_autres/m2/sig_m2/projet/SIG/app/src/main/AndroidManifest.xml reason: use-sdk injection requested
+MERGED from [com.android.support.constraint:constraint-layout:1.0.2] /home/vogel/.android/build-cache/325cdaee9af4af3ba0d521490c7981388eea940f/output/AndroidManifest.xml:5:5-7:41
+MERGED from [com.android.support:design:26.0.0-alpha1] /home/vogel/.android/build-cache/f0ea0e3d7d52d9214933ad029b16b045463f9c0c/output/AndroidManifest.xml:21:5-23:62
+MERGED from [com.android.support:appcompat-v7:26.0.0-alpha1] /home/vogel/.android/build-cache/9c94bd053e8ab2726d2d2dc81a8382ca6415d60f/output/AndroidManifest.xml:21:5-23:78
+MERGED from [com.android.support:animated-vector-drawable:26.0.0-alpha1] /home/vogel/.android/build-cache/12ce88ccae5e2fa7101785d25742b878426cf64c/output/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-vector-drawable:26.0.0-alpha1] /home/vogel/.android/build-cache/a876318f64a7eb5841f83e0e6302ed4775b59062/output/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:recyclerview-v7:26.0.0-alpha1] /home/vogel/.android/build-cache/015075c53f013ddd475aaf1c0ba65c45ae7995ad/output/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:transition:26.0.0-alpha1] /home/vogel/.android/build-cache/8fd45891d0aae1f10072c4854dd1e1569d059c73/output/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-v4:26.0.0-alpha1] /home/vogel/.android/build-cache/1af60e6694701f17d7484d270b6a9d666e91203e/output/AndroidManifest.xml:21:5-23:54
+MERGED from [com.android.support:support-media-compat:26.0.0-alpha1] /home/vogel/.android/build-cache/f57e51720e54d00384a1a20f66939f0f42550d00/output/AndroidManifest.xml:21:5-23:63
+MERGED from [com.android.support:support-fragment:26.0.0-alpha1] /home/vogel/.android/build-cache/1bc36f0ed9607622807656c60d9004b032b6a1f1/output/AndroidManifest.xml:21:5-23:60
+MERGED from [com.android.support:support-core-ui:26.0.0-alpha1] /home/vogel/.android/build-cache/2444e9bc17214fb52b62792b348567befc4717cc/output/AndroidManifest.xml:21:5-23:58
+MERGED from [com.android.support:support-core-utils:26.0.0-alpha1] /home/vogel/.android/build-cache/c22c85dc6d8c47c0d00d38dff57bd1791779291b/output/AndroidManifest.xml:21:5-23:61
+MERGED from [com.android.support:support-compat:26.0.0-alpha1] /home/vogel/.android/build-cache/197a9de0e54c5f64619c03d607f6c19323fd2251/output/AndroidManifest.xml:21:5-23:58
+	tools:overrideLibrary
+		ADDED from [com.android.support:design:26.0.0-alpha1] /home/vogel/.android/build-cache/f0ea0e3d7d52d9214933ad029b16b045463f9c0c/output/AndroidManifest.xml:23:9-59
+	android:targetSdkVersion
+		INJECTED from /home/vogel/Documents/learning/projet_autres/m2/sig_m2/projet/SIG/app/src/main/AndroidManifest.xml
+		INJECTED from /home/vogel/Documents/learning/projet_autres/m2/sig_m2/projet/SIG/app/src/main/AndroidManifest.xml
+	android:minSdkVersion
+		INJECTED from /home/vogel/Documents/learning/projet_autres/m2/sig_m2/projet/SIG/app/src/main/AndroidManifest.xml
+		INJECTED from /home/vogel/Documents/learning/projet_autres/m2/sig_m2/projet/SIG/app/src/main/AndroidManifest.xml
+meta-data#android.support.VERSION
+ADDED from [com.android.support:design:26.0.0-alpha1] /home/vogel/.android/build-cache/f0ea0e3d7d52d9214933ad029b16b045463f9c0c/output/AndroidManifest.xml:25:5-27:41
+MERGED from [com.android.support:appcompat-v7:26.0.0-alpha1] /home/vogel/.android/build-cache/9c94bd053e8ab2726d2d2dc81a8382ca6415d60f/output/AndroidManifest.xml:25:5-27:41
+MERGED from [com.android.support:animated-vector-drawable:26.0.0-alpha1] /home/vogel/.android/build-cache/12ce88ccae5e2fa7101785d25742b878426cf64c/output/AndroidManifest.xml:22:5-24:41
+MERGED from [com.android.support:support-vector-drawable:26.0.0-alpha1] /home/vogel/.android/build-cache/a876318f64a7eb5841f83e0e6302ed4775b59062/output/AndroidManifest.xml:22:5-24:41
+MERGED from [com.android.support:recyclerview-v7:26.0.0-alpha1] /home/vogel/.android/build-cache/015075c53f013ddd475aaf1c0ba65c45ae7995ad/output/AndroidManifest.xml:22:5-24:41
+MERGED from [com.android.support:transition:26.0.0-alpha1] /home/vogel/.android/build-cache/8fd45891d0aae1f10072c4854dd1e1569d059c73/output/AndroidManifest.xml:22:5-24:41
+MERGED from [com.android.support:support-v4:26.0.0-alpha1] /home/vogel/.android/build-cache/1af60e6694701f17d7484d270b6a9d666e91203e/output/AndroidManifest.xml:25:5-27:41
+MERGED from [com.android.support:support-media-compat:26.0.0-alpha1] /home/vogel/.android/build-cache/f57e51720e54d00384a1a20f66939f0f42550d00/output/AndroidManifest.xml:25:5-27:41
+MERGED from [com.android.support:support-fragment:26.0.0-alpha1] /home/vogel/.android/build-cache/1bc36f0ed9607622807656c60d9004b032b6a1f1/output/AndroidManifest.xml:25:5-27:41
+MERGED from [com.android.support:support-core-ui:26.0.0-alpha1] /home/vogel/.android/build-cache/2444e9bc17214fb52b62792b348567befc4717cc/output/AndroidManifest.xml:25:5-27:41
+MERGED from [com.android.support:support-core-utils:26.0.0-alpha1] /home/vogel/.android/build-cache/c22c85dc6d8c47c0d00d38dff57bd1791779291b/output/AndroidManifest.xml:25:5-27:41
+MERGED from [com.android.support:support-compat:26.0.0-alpha1] /home/vogel/.android/build-cache/197a9de0e54c5f64619c03d607f6c19323fd2251/output/AndroidManifest.xml:25:5-27:41
+	android:value
+		ADDED from [com.android.support:design:26.0.0-alpha1] /home/vogel/.android/build-cache/f0ea0e3d7d52d9214933ad029b16b045463f9c0c/output/AndroidManifest.xml:27:9-38
+	android:name
+		ADDED from [com.android.support:design:26.0.0-alpha1] /home/vogel/.android/build-cache/f0ea0e3d7d52d9214933ad029b16b045463f9c0c/output/AndroidManifest.xml:26:9-47

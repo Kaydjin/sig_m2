@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        is-multidex="true"
+        jar="/home/vogel/Documents/learning/projet_autres/m2/sig_m2/projet/SIG/app/build/intermediates/incremental-classes/debug/instant-run-bootstrap.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="26.0.2"
+        sha1="b93e93dc3348efe66907bb812e945eada3afa4bb">
+        <dex dex="/home/vogel/Documents/learning/projet_autres/m2/sig_m2/projet/SIG/app/build/intermediates/transforms/dex/debug/folders/1000/10000/instant-run-bootstrap_201909482a2df3918739ec740149b72501f3c8b1/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/home/vogel/Documents/learning/projet_autres/m2/sig_m2/projet/SIG/app/build/intermediates/incremental-runtime-classes/debug/instant-run.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="26.0.2"
+        sha1="3be78ebc2706b2e1fe2f12d5726887a92d6c183b">
+        <dex dex="/home/vogel/Documents/learning/projet_autres/m2/sig_m2/projet/SIG/app/build/intermediates/transforms/dex/debug/folders/1000/10000/instant-run_898be72a62c9c2619b01c802a9bbc3b91ef1b53e/classes.dex" />
+    </item>
+
+</items>
