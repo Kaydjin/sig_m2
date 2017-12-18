@@ -10,8 +10,22 @@ import org.osmdroid.config.Configuration;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
+import org.osmdroid.views.overlay.ItemizedIconOverlay;
+import org.osmdroid.views.overlay.MinimapOverlay;
+import org.osmdroid.views.overlay.Overlay;
+import org.osmdroid.views.overlay.OverlayItem;
+import org.osmdroid.views.overlay.compass.CompassOverlay;
+import org.osmdroid.views.overlay.compass.InternalCompassOrientationProvider;
+import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider;
+import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
+
+    MyLocationNewOverlay mLocationOverlay;
+    CompassOverlay mCompassOverlay;
+    MinimapOverlay mMinimapOverlay;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,10 +42,39 @@ public class MainActivity extends AppCompatActivity {
         map.setBuiltInZoomControls(true);
         map.setMultiTouchControls(true);
 
+        map.setMinZoomLevel(8);
+
         IMapController mapController = map.getController();
-        mapController.setZoom(9);
-        GeoPoint startPoint = new GeoPoint(48.8583, 2.2944);
+        mapController.setZoom(13); //small road
+
+        GeoPoint startPoint = new GeoPoint(46.159, -1.153); // a la rochelle
         mapController.setCenter(startPoint);
+
+        //Add point on the map
+
+
+        ArrayList<OverlayItem> items = new ArrayList<>();
+        GeoPoint beauvais = new GeoPoint(49.438,2.097);
+        items.add(new OverlayItem("1", "Beauvais", beauvais));
+
+
+        //add localisation
+        this.mLocationOverlay = new MyLocationNewOverlay(new GpsMyLocationProvider(ctx),map);
+        this.mLocationOverlay.enableMyLocation();
+        map.getOverlays().add(this.mLocationOverlay);
+
+        //add compass
+        this.mCompassOverlay = new CompassOverlay(ctx, new InternalCompassOrientationProvider(ctx), map);
+        this.mCompassOverlay.enableCompass();
+        map.getOverlays().add(this.mCompassOverlay);
+
+
+
+
+
+
+
+
 
 
     }
