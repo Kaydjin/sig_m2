@@ -6,24 +6,13 @@
     android:layout_height="match_parent"
     tools:context="test.o2121076.myapplication.MainActivity">
 
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" >
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
-            tools:context=".MainActivity" />
-
-        <org.osmdroid.views.MapView
-            android:id="@+id/mapview"
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+        <org.osmdroid.views.MapView android:id="@+id/map"
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:clickable="true"/>
-
-    </RelativeLayout>
+            android:layout_height="fill_parent" />
+    </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>

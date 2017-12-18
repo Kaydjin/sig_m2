@@ -1,35 +1,47 @@
 package test.o2121076.myapplication;
 
-import android.graphics.drawable.Drawable;
+import android.content.Context;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
+import org.osmdroid.api.IMapController;
+import org.osmdroid.config.Configuration;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
+import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 
 public class MainActivity extends AppCompatActivity {
-
-    MyItemizedOverlay myItemizedOverlay = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Context ctx = getApplicationContext();
+        //important! set your user agent to prevent getting banned from the osm servers
+        Configuration.getInstance().load(ctx, PreferenceManager.getDefaultSharedPreferences(ctx));
+        setContentView(R.layout.activity_main);
 
-        MapView mapView = (MapView) findViewById(R.id.mapview);
-        mapView.setBuiltInZoomControls(true);
+        MapView map = (MapView) findViewById(R.id.map);
+        map.setTileSource(TileSourceFactory.MAPNIK);
 
-        Drawable marker=getResources().getDrawable(android.R.drawable.star_big_on);
-        int markerWidth = marker.getIntrinsicWidth();
-        int markerHeight = marker.getIntrinsicHeight();
-        marker.setBounds(0, markerHeight, markerWidth, 0);
+        map.setBuiltInZoomControls(true);
+        map.setMultiTouchControls(true);
 
-        myItemizedOverlay = new MyItemizedOverlay(marker);
-        mapView.getOverlays().add(myItemizedOverlay);
-
-        GeoPoint myPoint1 = new GeoPoint(0*1000000, 0*1000000);
-        GeoPoint myPoint2 = new GeoPoint(50*1000000, 50*1000000);
+        IMapController mapController = map.getController();
+        mapController.setZoom(9);
+        GeoPoint startPoint = new GeoPoint(48.8583, 2.2944);
+        mapController.setCenter(startPoint);
 
 
+    }
+
+    public void onResume(){
+        super.onResume();
+        //this will refresh the osmdroid configuration on resuming.
+        //if you make changes to the configuration, use
+        //SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        //Configuration.getInstance().save(this, prefs);
+        Configuration.getInstance().load(this, PreferenceManager.getDefaultSharedPreferences(this));
     }
 }
