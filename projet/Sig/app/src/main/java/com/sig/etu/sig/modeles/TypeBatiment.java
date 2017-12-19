@@ -1,7 +1,7 @@
 package com.sig.etu.sig.modeles;
 
 public class TypeBatiment {
-    public enum Tribunaux {INSTANCE, GRANDE_INSTANCE,ENFANT,COMMERCIAL;}
+    public enum Tribunaux {INSTANCE, GRANDE_INSTANCE,ENFANT,GREFFE;}
     private int id;
     private String type;
     private String description;
