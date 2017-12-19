@@ -1,0 +1,107 @@
+annuaire_lieux_justice.csv -> lieux_normalises.csv: récupération des champs intéressants.
+annuaire_tgi.csv -> tribunaux_gi_normalises.csv: récupération des champs intéressants.
+annuaire_ti.csv -> tribunaux_ti_normalises.csv:  récupération des champs intéressants.
+liste-des-greffes.csv -> greffes_normalises.csv:  récupération des champs intéressants.
+
+lieux_normalises.csv ->
+-Intitulé	
+-Adresse 1 2 3 et 4	
+-Tel 1 + 2	
+-Téléphone 2	
+-Adresse 4	
+-Adresse 1	
+-Adresse 2	
+-Adresse 3	
+-Code postal	
+-Commune	
+-Téléphone	
+-Latitude	
+-Longitude
+
+tribunaux_gi_normalises.csv ->
+-Intitulé	
+-ADRESSE (adresse 1 + adresse 2 + adresse 3)	
+-Code postal	
+-Commune	
+-TELEPHONE	
+-Adresse 1	
+-Adresse 2	
+-Latitude	
+-Longitude	
+-Adresse 3	
+-Téléphone 1	
+-Téléphone 2
+
+tribunaux_ti_normalises.csv ->
+-Intitulé	
+-Adresse 1 + 2 + 3	
+-Adresse3	
+-Adresse 1	
+-Adresse 2	
+-Code postal	
+-Commune	
+-Téléphone	
+-Latitude	
+-Longitude
+
+greffes_normalises.csv ->
+-GREFFE	
+-Adresse	
+-Code postal	
+-Ville	
+-Telephone	
+-Latitude	
+-Longitude
+
+Généricité organisationnel des colonnes:
+lieux_normalises.csv -> lieux_normalises2.csv
+tribunaux_ti_normalises.csv -> tribunaux_ti_normalises2.csv
+greffes_normalises.csv -> greffes_normalises2.csv
+tribunaux_gi_normalises.csv -> tribunaux_gi_normalises2.csv
+
+-intitule
+-adresse
+-codepostal
+-commune
+-telephone
+-latitude	
+-longitude
+
+Suppression des lignes ne contenant pas de données latitude et longitude:
+lieux_normalises2.csv -> lieux_normalises3.csv 
+tribunaux_ti_normalises2.csv -> tribunaux_ti_normalises3.csv
+greffes_normalises2.csv -> greffes_normalises3.csv
+tribunaux_gi_normalises2.csv -> tribunaux_gi_normalises3.csv
+
+Remarque: Modifications des données pour un séparateur en point virgule et non en virgule dans les champs pour éviter les erreurs de séparation.
+
+Création d'un fichier "tribunal_enfants.csv" ne contenant que les données des tribunaux pour enfants:
+
+Mise en forme du champ "ville" pour simplifier les duplicatas avec peu de différence.
+tribunaux_enfants.csv -> tribunaux_enfants4.csv 
+tribunaux_ti_normalises3.csv -> tribunaux_ti_normalises4.csv
+greffes_normalises3.csv -> greffes_normalises4.csv
+tribunaux_gi_normalises3.csv -> tribunaux_gi_normalises4.csv
+
+Transformer toutes ces données en un seul fichier -> lieux.csv + rajouter un 0 devant le numéro téléphone des greffes.
+
+-intitule
+-type
+-adresse
+-codepostal
+-commune
+-telephone
+-latitude	
+-longitude
+
+
+
+
+
+
+
+
+
+
+
+
