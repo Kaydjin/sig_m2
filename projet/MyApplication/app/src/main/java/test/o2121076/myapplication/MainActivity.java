@@ -5,24 +5,24 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
+
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.preference.PreferenceManager;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
+
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
-import android.widget.ImageView;
+
+import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
+
 
 import org.osmdroid.api.IMapController;
 import org.osmdroid.config.Configuration;
@@ -31,12 +31,10 @@ import org.osmdroid.views.MapView;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 import org.osmdroid.views.overlay.ItemizedIconOverlay;
 import org.osmdroid.views.overlay.ItemizedOverlayWithFocus;
-import org.osmdroid.views.overlay.MinimapOverlay;
-import org.osmdroid.views.overlay.Overlay;
 import org.osmdroid.views.overlay.OverlayItem;
 import org.osmdroid.views.overlay.compass.CompassOverlay;
 import org.osmdroid.views.overlay.compass.InternalCompassOrientationProvider;
-import org.osmdroid.views.overlay.gestures.RotationGestureOverlay;
+
 import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider;
 import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay;
 
@@ -44,8 +42,8 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements LocationListener {
     MapView map;
-
     CompassOverlay mCompassOverlay;
+    GeoPoint paris = new GeoPoint(48.866667,2.333333);
 
 
     @Override
@@ -53,7 +51,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         final Context ctx = getApplicationContext();
-        //important! set your user agent to prevent getting banned from the osm servers
+        //
         Configuration.getInstance().load(ctx, PreferenceManager.getDefaultSharedPreferences(ctx));
         setContentView(R.layout.activity_main);
 
@@ -63,15 +61,13 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         map.setBuiltInZoomControls(true);
 
         map.setMultiTouchControls(true);
-        map.setMinZoomLevel(8);
-        IMapController mapController = map.getController();
+        map.setMinZoomLevel(7);
+        final IMapController mapController = map.getController();
         mapController.setZoom(13); //small road
 
         DisplayMetrics dm = ctx.getResources().getDisplayMetrics();
         /***/
 
-        //GeoPoint startPoint = new GeoPoint(46.159, -1.153); // a la rochelle
-        //mapController.setCenter(startPoint);
 
         //Add point on the map
         ArrayList<OverlayItem> items = new ArrayList<>();
@@ -114,10 +110,35 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
             mMinimapOverlay.setZoomDifference(5);
             map.getOverlays().add(mMinimapOverlay);*/
 
-            //centre le début sur la position de l'utilisateur
-            GeoPoint startPoint = new GeoPoint(location);
+            final GeoPoint startPoint;
+            if(location == null)
+            {
+                //cas ou le gps fonctionne mal on positionne sur Paris
+                startPoint = new GeoPoint(paris);
+                TextView error_gps = (TextView) findViewById(R.id.text_error);
+                error_gps.setVisibility(TextView.VISIBLE);
+            }
+
+            else {
+                startPoint = new GeoPoint(location); //centre le début sur la position de l'utilisateur
+
+                TextView error_gps = (TextView) findViewById(R.id.text_error);
+                error_gps.setVisibility(TextView.INVISIBLE);
+            }
             mapController.setCenter(startPoint);
+
+            /*Button qui re centre la map sur notre position*/
+            ImageButton focusPosition = (ImageButton) findViewById(R.id.ButtonFocusPosition);
+            focusPosition.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mapController.setCenter(startPoint);
+                }
+            });
         }
+
+        /***/
+
     }
 
     //Creer un point d'interet sur la carte
@@ -135,7 +156,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                     @Override
                     public boolean onItemSingleTapUp(final int index, final OverlayItem item) {
 
-                        //set up dialog
+                        //on met en place le dialog
                         Dialog dialog = new Dialog(MainActivity.this);
 
                         dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
@@ -143,20 +164,17 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                         dialog.setContentView(R.layout.custom_dialog);
 
                         dialog.setCancelable(true);
-                        //there are a lot of settings, for dialog, check them all out!
 
-                        //set up text
                         TextView map_popup_header = (TextView) dialog.findViewById(R.id.map_popup_header);
                         map_popup_header.setText(item.getTitle());
 
                         TextView map_popup_body = (TextView) dialog.findViewById(R.id.map_popup_body);
                         map_popup_body.setText(item.getSnippet());
 
-                        //now that the dialog is set up, it's time to show it
                         map.getController().setCenter(item.getPoint()); // On centre dessus :)
                         dialog.show();
 
-                        return true; // We 'handled' this event.
+                        return true;
                     }
 
                     @Override
@@ -173,15 +191,50 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
     }
 
     @Override
-    public void onLocationChanged(Location location) {
-        double lat =  (location.getLatitude());
-        double lng = (location.getLongitude());
-        GeoPoint point = new GeoPoint(lat, lng);
+    public void onLocationChanged(final Location location) {
 
+        if(location == null)
+        {
+            TextView error_gps = (TextView) findViewById(R.id.text_error);
+            error_gps.setVisibility(TextView.VISIBLE);
+
+            ImageButton focusPosition = (ImageButton) findViewById(R.id.ButtonFocusPosition);
+            focusPosition.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    map.getController().setCenter(new GeoPoint(paris));
+                }
+            });
+
+        }
+
+        else {
+            TextView error_gps = (TextView) findViewById(R.id.text_error);
+            error_gps.setVisibility(TextView.INVISIBLE);
+            ImageButton focusPosition = (ImageButton) findViewById(R.id.ButtonFocusPosition);
+            focusPosition.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    map.getController().setCenter(new GeoPoint(location));
+                }
+            });
+        }
     }
 
     @Override
-    public void onStatusChanged(String s, int i, Bundle bundle) {
+    public void onStatusChanged(String s, int status, Bundle bundle) {
+        // OUT_OF_SERVICE  Constant Value: 0 (0x00000000)
+        // int TEMPORARILY_UNAVAILABLE   Constant Value: 1 (0x00000001)
+        if(status == 0 || status == 1)
+        {
+            TextView error_gps = (TextView) findViewById(R.id.text_error);
+            error_gps.setVisibility(TextView.VISIBLE);
+        }
+        else //2 == AVAIBLE
+        {
+            TextView error_gps = (TextView) findViewById(R.id.text_error);
+            error_gps.setVisibility(TextView.INVISIBLE);
+        }
 
     }
 
