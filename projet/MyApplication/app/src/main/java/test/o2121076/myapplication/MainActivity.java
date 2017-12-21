@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 
 import android.location.Location;
@@ -25,6 +26,9 @@ import android.widget.TextView;
 
 
 import org.osmdroid.api.IMapController;
+import org.osmdroid.bonuspack.routing.OSRMRoadManager;
+import org.osmdroid.bonuspack.routing.Road;
+import org.osmdroid.bonuspack.routing.RoadManager;
 import org.osmdroid.config.Configuration;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
@@ -32,6 +36,8 @@ import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 import org.osmdroid.views.overlay.ItemizedIconOverlay;
 import org.osmdroid.views.overlay.ItemizedOverlayWithFocus;
 import org.osmdroid.views.overlay.OverlayItem;
+import org.osmdroid.views.overlay.PathOverlay;
+import org.osmdroid.views.overlay.Polyline;
 import org.osmdroid.views.overlay.ScaleBarOverlay;
 import org.osmdroid.views.overlay.compass.CompassOverlay;
 import org.osmdroid.views.overlay.compass.InternalCompassOrientationProvider;
@@ -45,6 +51,9 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
     MapView map;
     CompassOverlay mCompassOverlay;
     GeoPoint paris = new GeoPoint(48.866667,2.333333);
+    Location location = null;
+    Road road = null;
+    Polyline polyline = null;
 
 
     @Override
@@ -90,7 +99,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         {
             LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 3000, 10,this);
-            Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 
             //add localisation
             MyLocationNewOverlay mLocationOverlay = new MyLocationNewOverlay(new GpsMyLocationProvider(ctx), map);
@@ -157,7 +166,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
     }
 
     //affiche la liste des point d'interets avec leur description losqu'on clique dessus
-    public void affichePointInteret(Context ctx, ArrayList<OverlayItem> items )
+    public void affichePointInteret(final Context ctx, ArrayList<OverlayItem> items )
     {
         map.getOverlays().add(new ItemizedOverlayWithFocus<>(ctx, items,
                 new ItemizedIconOverlay.OnItemGestureListener<OverlayItem>() {
@@ -165,6 +174,12 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                     @Override
                     public boolean onItemSingleTapUp(final int index, final OverlayItem item) {
 
+                        affichageDialog(index,item);
+                        return true;
+                    }
+
+                    public void affichageDialog(final int index, final OverlayItem item)
+                    {
                         //on met en place le dialog
                         Dialog dialog = new Dialog(MainActivity.this);
 
@@ -180,15 +195,62 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                         TextView map_popup_body = (TextView) dialog.findViewById(R.id.map_popup_body);
                         map_popup_body.setText(item.getSnippet());
 
+                        TextView map_popup_distance = (TextView) dialog.findViewById(R.id.map_popup_distance);
+                        float[] distance = new float[1];
+                        Location.distanceBetween(location.getLatitude(), location.getLongitude(), item.getPoint().getLatitude(), item.getPoint().getLongitude(), distance);
+                        map_popup_distance.setText(distance[0]*0.001 + " km");
+
                         map.getController().setCenter(item.getPoint()); // On centre dessus :)
                         dialog.show();
-
-                        return true;
                     }
 
                     @Override
                     public boolean onItemLongPress(final int index, final OverlayItem item) {
-                        return false;
+
+                    //Je fais la route LOL c'est optionnel :))))))
+                        /*
+                        if(road != null)
+                            map.getOverlays().remove(road);
+
+                        Log.e("route", "Debut trace route");
+
+                        Runnable runnable = new Runnable() {
+                            @Override
+                            public void run() {
+                                RoadManager roadManager = new OSRMRoadManager(MainActivity.this);
+                                ArrayList<GeoPoint> waypoints = new ArrayList<>();
+                                waypoints.add(new GeoPoint(location.getLatitude(),location.getLongitude()));
+
+                                waypoints.add(new GeoPoint(item.getPoint().getLatitude(), item.getPoint().getLongitude()));
+
+                                road = roadManager.getRoad(waypoints);
+                                Polyline roadOverlay = RoadManager.buildRoadOverlay(road);
+                                map.getOverlays().add(roadOverlay);
+                            }
+                        };
+
+                        new Thread(runnable).start();
+
+                        Log.e("route", "je trace mon chemin");
+                        */
+                        if(polyline != null)
+                        {
+                            Log.e("Polyline", "suppression ancienne ligne");
+                            map.getOverlays().remove(polyline);
+                            polyline = null;
+                            polyline = new Polyline();
+                        }
+                        else
+                        {
+                            polyline = new Polyline();
+                        }
+                        ArrayList<GeoPoint> waypoints = new ArrayList<>();
+                        waypoints.add(new GeoPoint(location.getLatitude(),location.getLongitude()));
+                        waypoints.add(new GeoPoint(item.getPoint().getLatitude(), item.getPoint().getLongitude()));
+                        polyline.setPoints(waypoints);
+                        map.getOverlays().add(polyline);
+
+                        return true;
                     }
                 })
         );
