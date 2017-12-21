@@ -32,6 +32,7 @@ import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 import org.osmdroid.views.overlay.ItemizedIconOverlay;
 import org.osmdroid.views.overlay.ItemizedOverlayWithFocus;
 import org.osmdroid.views.overlay.OverlayItem;
+import org.osmdroid.views.overlay.ScaleBarOverlay;
 import org.osmdroid.views.overlay.compass.CompassOverlay;
 import org.osmdroid.views.overlay.compass.InternalCompassOrientationProvider;
 
@@ -103,6 +104,10 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
             Log.e("enableCompass OK?", mCompassOverlay.isCompassEnabled() + "  ");
             map.getOverlays().add(this.mCompassOverlay);
 
+            ScaleBarOverlay myScaleBarOverlay = new ScaleBarOverlay(map);
+            myScaleBarOverlay.setAlignRight(true);
+            map.getOverlays().add(myScaleBarOverlay);
+
             // ajout d'une minimap
            /* MinimapOverlay mMinimapOverlay = new MinimapOverlay(ctx, map.getTileRequestCompleteHandler());
             mMinimapOverlay.setWidth(dm.widthPixels / 5);
@@ -138,6 +143,10 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         }
 
         /***/
+        /**TODO
+         * -Distance entre nous et le point d'interet (faire lors d'un onItemLongPress on peut afficher la distance)
+         * -Ajout a la volée (button en bas à droite pour activer) tu cliques sur la map, ajout d'un point et demande les informations sous forme d'un Dialog
+         * **/
 
     }
 
