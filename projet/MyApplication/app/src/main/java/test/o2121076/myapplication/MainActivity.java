@@ -21,8 +21,10 @@ import android.util.Log;
 import android.view.View;
 import android.view.Window;
 
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import org.osmdroid.api.IMapController;
@@ -53,6 +55,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
     Location location = null;
     Road road = null;
     Polyline polyline = null;
+    Polyline roadOverlay = null;
 
 
     @Override
@@ -116,13 +119,6 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
             myScaleBarOverlay.setAlignRight(true);
             map.getOverlays().add(myScaleBarOverlay);
 
-            // ajout d'une minimap
-           /* MinimapOverlay mMinimapOverlay = new MinimapOverlay(ctx, map.getTileRequestCompleteHandler());
-            mMinimapOverlay.setWidth(dm.widthPixels / 5);
-            mMinimapOverlay.setHeight(dm.heightPixels / 5);
-            mMinimapOverlay.setZoomDifference(5);
-            map.getOverlays().add(mMinimapOverlay);*/
-
             final GeoPoint startPoint;
             if(location == null)
             {
@@ -148,13 +144,15 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                     mapController.setCenter(startPoint);
                 }
             });
-        }
 
-        /***/
-        /**TODO
-         * -Distance entre nous et le point d'interet (faire lors d'un onItemLongPress on peut afficher la distance)
-         * -Ajout a la volée (button en bas à droite pour activer) tu cliques sur la map, ajout d'un point et demande les informations sous forme d'un Dialog
-         * **/
+            final Button buttonAddPoint = (Button) findViewById(R.id.ButtonAddPoint);
+            buttonAddPoint.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    //TODO ajout d'un repère sur la carte
+                }
+            });
+        }
 
     }
 
@@ -177,10 +175,10 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                         return true;
                     }
 
-                    public void affichageDialog(final int index, final OverlayItem item)
+                    private void affichageDialog(final int index, final OverlayItem item)
                     {
                         //on met en place le dialog
-                        Dialog dialog = new Dialog(MainActivity.this);
+                        final Dialog dialog = new Dialog(MainActivity.this);
 
                         dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
                         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
@@ -199,19 +197,25 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                         Location.distanceBetween(location.getLatitude(), location.getLongitude(), item.getPoint().getLatitude(), item.getPoint().getLongitude(), distance);
                         map_popup_distance.setText(distance[0]*0.001 + " km");
 
+                        //On route un button pour que l'utilisateur puissent calculer son trajet en gps :
+
+                        ImageButton map_popup_buttonGps = (ImageButton) dialog.findViewById(R.id.map_popup_buttonGps);
+                        map_popup_buttonGps.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                               //Ici on lance le calcul itinéraire
+                                dialog.cancel(); // On ferme le dialogue
+                                gpsChemin(index,item);
+                            }
+                        });
                         map.getController().setCenter(item.getPoint()); // On centre dessus :)
                         dialog.show();
                     }
 
-                    @Override
-                    public boolean onItemLongPress(final int index, final OverlayItem item) {
-
-                    //Je fais la route LOL c'est optionnel :))))))
-                        /*
-                        if(road != null)
-                            map.getOverlays().remove(road);
-
-                        Log.e("route", "Debut trace route");
+                    private void gpsChemin(final int index, final OverlayItem item)
+                    {
+                        Log.e("route", "Debut calcule route");
+                        Toast.makeText(ctx, "Calcul de l'itineraire", Toast.LENGTH_LONG).show();
 
                         Runnable runnable = new Runnable() {
                             @Override
@@ -223,15 +227,45 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                                 waypoints.add(new GeoPoint(item.getPoint().getLatitude(), item.getPoint().getLongitude()));
 
                                 road = roadManager.getRoad(waypoints);
-                                Polyline roadOverlay = RoadManager.buildRoadOverlay(road);
-                                map.getOverlays().add(roadOverlay);
+
+                                if(roadOverlay != null)
+                                {
+                                    map.getOverlays().remove(roadOverlay);
+                                    roadOverlay = null;
+                                    Log.e("route", "suppression ancien trajet");
+                                }
+
+                                runOnUiThread(new Runnable()
+                                {
+                                    public void run()
+                                    {
+                                        if (road.mStatus != Road.STATUS_OK)
+                                        {
+                                            Toast.makeText(ctx, "Erreur", Toast.LENGTH_LONG).show();
+                                        }
+                                        else
+                                        {
+                                            Toast.makeText(ctx, "distance="+road.mLength+" km", Toast.LENGTH_LONG).show();
+                                            Toast.makeText(ctx, "durée="+(road.mDuration/3600d)+ " h", Toast.LENGTH_LONG).show();
+                                            roadOverlay = RoadManager.buildRoadOverlay(road);
+                                            map.getOverlays().add(roadOverlay);
+                                        }
+
+                                    }
+                                });
+
+
                             }
                         };
 
                         new Thread(runnable).start();
 
-                        Log.e("route", "je trace mon chemin");
-                        */
+                        Log.e("route", "Le calcul est en cours");
+                    }
+
+                    @Override
+                    public boolean onItemLongPress(final int index, final OverlayItem item) {
+
                         if(polyline != null)
                         {
                             Log.e("Polyline", "suppression ancienne ligne");

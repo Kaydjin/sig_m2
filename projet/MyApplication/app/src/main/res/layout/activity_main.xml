@@ -20,7 +20,7 @@
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:orientation="vertical"
+        android:orientation="horizontal"
         android:gravity="bottom">
 
         <ImageButton
@@ -30,6 +30,26 @@
             android:padding="10dip"
             android:background="@null"
             app:srcCompat="@drawable/osm_ic_center_map" />
+
+    </LinearLayout>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical"
+        android:layout_gravity="bottom|right">
+
+        <Button
+            android:id="@+id/ButtonAddPoint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dip"
+            android:layout_alignParentRight="true"
+            android:text=" Ajout repère "
+            android:textColor="@color/black"
+            android:textAlignment="center"
+            android:background="@drawable/circle_button"
+            />
     </LinearLayout>
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
