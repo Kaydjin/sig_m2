@@ -3,6 +3,7 @@ package test.o2121076.myapplication;
 import android.Manifest;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.ColorDrawable;
 
@@ -38,6 +39,7 @@ import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 import org.osmdroid.views.overlay.ItemizedIconOverlay;
 import org.osmdroid.views.overlay.ItemizedOverlayWithFocus;
 import org.osmdroid.views.overlay.MapEventsOverlay;
+import org.osmdroid.views.overlay.Overlay;
 import org.osmdroid.views.overlay.OverlayItem;
 import org.osmdroid.views.overlay.Polyline;
 import org.osmdroid.views.overlay.ScaleBarOverlay;
@@ -49,19 +51,24 @@ import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity implements LocationListener, MapEventsReceiver{
+public class MainActivity extends AppCompatActivity implements LocationListener{
     MapView map;
     CompassOverlay mCompassOverlay;
     GeoPoint paris = new GeoPoint(48.866667,2.333333);
+    GeoPoint coord_new_point = null;
     Location location = null;
     Road road = null;
     Polyline polyline = null;
     Polyline roadOverlay = null;
-    final CharSequence textButton_AjoutRepere_Ajouter = " Ajouter repère ";
-    final CharSequence textButton_AjoutRepere_Annuler = " Annuler ";
-    boolean estClick_surLaCarte_active = false;
+    final CharSequence textButton_AjoutRepere_Ajouter = " ON";
+    final CharSequence textButton_AjoutRepere_Annuler = " OFF ";
 
     MapEventsOverlay overlayEvents = null;
+
+    //Permet l'ajout de point sur la carte
+    ArrayList<OverlayItem> items = new ArrayList<>();
+    //Point ajouter par l'utilisateur
+    ArrayList<OverlayItem> personnel = new ArrayList<>();
 
 
     @Override
@@ -89,8 +96,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
         /***/
 
 
-        //Add point on the map
-        ArrayList<OverlayItem> items = new ArrayList<>();
+
        /* OverlayItem o = new OverlayItem("Beauvais - Titre", "Beauvais - Description", new GeoPoint(49.438,2.097));
         OverlayItem o2 = new OverlayItem("Rochelle - Titre", "Rochelle - Description", new GeoPoint(46.159, -1.153));
 */
@@ -98,8 +104,6 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
         items.add(creerPointInteret("Rochelle - Titre", "Rochelle - Description", 46.159, -1.153));
 
         affichePointInteret(ctx,items);
-
-
 
         if(ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)
         {
@@ -163,14 +167,14 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
                     {
                         //Ici on s'occupe de la partie l'ajout d'un point sur la carte
                         buttonAddPoint.setText(textButton_AjoutRepere_Annuler);
-
-                        estClick_surLaCarte_active = true;
-
                         //on affiche un petit toast pour lui dire : "click sur la map pour ajouter le point"
                         MapEventsReceiver mReceive = new MapEventsReceiver() {
                             @Override
                             public boolean singleTapConfirmedHelper(GeoPoint p) {
-                                Toast.makeText(getBaseContext(),p.getLatitude() + " - "+p.getLongitude(),Toast.LENGTH_LONG).show();
+                                //Toast.makeText(getBaseContext(),p.getLatitude() + " - "+p.getLongitude(),Toast.LENGTH_LONG).show();
+                                coord_new_point = p;
+                                Intent intent = new Intent(ctx, FormulaireActivity.class);
+                                startActivityForResult(intent, 0);
 
                                 return false;
                             }
@@ -189,7 +193,6 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
                     else
                     {
                         buttonAddPoint.setText(textButton_AjoutRepere_Ajouter);
-                        estClick_surLaCarte_active = false;
                         if(overlayEvents != null)
                         {
                             map.getOverlays().remove(overlayEvents);
@@ -407,22 +410,30 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
 
     }
 
+    //On récupere de la partie de FormulaireActivity
     @Override
-    public boolean singleTapConfirmedHelper(GeoPoint p) {
-        if(estClick_surLaCarte_active)
-        {
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // Retour 0 pour le formulaire
+        if (requestCode == 0) {
+            // Cas ou on va ajouter
+            if (resultCode == RESULT_OK) {
+                String nom = data.getStringExtra("Nom");
+                String adresse = data.getStringExtra("Adresse");
+                String codePostal = data.getStringExtra("CodePostale");
+                String telephone = data.getStringExtra("Telephone");
+                //TODO  String type = data.getStringExtra("Type");
+                String ville = data.getStringExtra("Ville");
 
+                personnel.add(creerPointInteret(nom,
+                        ville + "\n" +
+                        adresse + " " +
+                        codePostal + "\n" +
+                        telephone
+                        , coord_new_point.getLatitude(),coord_new_point.getLongitude()));
+                affichePointInteret(getApplicationContext(),items);
+            }
+            //Sinon on ne fait rien
         }
-        return true;
     }
 
-    @Override
-    public boolean longPressHelper(GeoPoint p) {
-        return false;
-    }
-
-    @Override
-    public void onPointerCaptureChanged(boolean hasCapture) {
-
-    }
 }
