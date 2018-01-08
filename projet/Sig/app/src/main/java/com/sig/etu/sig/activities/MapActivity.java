@@ -1,67 +1,63 @@
-package test.o2121076.myapplication;
+package com.sig.etu.sig.activities;
 
 import android.Manifest;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
-
 import android.view.View;
 import android.view.Window;
-
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.sig.etu.sig.R;
 
 import org.osmdroid.api.IMapController;
 import org.osmdroid.bonuspack.routing.OSRMRoadManager;
 import org.osmdroid.bonuspack.routing.Road;
 import org.osmdroid.bonuspack.routing.RoadManager;
 import org.osmdroid.config.Configuration;
-import org.osmdroid.events.MapEventsReceiver;
+import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
-import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 import org.osmdroid.views.overlay.ItemizedIconOverlay;
 import org.osmdroid.views.overlay.ItemizedOverlayWithFocus;
-import org.osmdroid.views.overlay.MapEventsOverlay;
 import org.osmdroid.views.overlay.OverlayItem;
 import org.osmdroid.views.overlay.Polyline;
 import org.osmdroid.views.overlay.ScaleBarOverlay;
 import org.osmdroid.views.overlay.compass.CompassOverlay;
 import org.osmdroid.views.overlay.compass.InternalCompassOrientationProvider;
-
 import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider;
 import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity implements LocationListener, MapEventsReceiver{
+public class MapActivity extends AppCompatActivity implements LocationListener {
     MapView map;
     CompassOverlay mCompassOverlay;
-    GeoPoint paris = new GeoPoint(48.866667,2.333333);
+    //GeoPoint paris = new GeoPoint(48.866667,2.333333);
+    GeoPoint geo = null;
     Location location = null;
     Road road = null;
     Polyline polyline = null;
     Polyline roadOverlay = null;
-    final CharSequence textButton_AjoutRepere_Ajouter = " Ajouter repère ";
-    final CharSequence textButton_AjoutRepere_Annuler = " Annuler ";
-    boolean estClick_surLaCarte_active = false;
 
-    MapEventsOverlay overlayEvents = null;
+    public static final String EXTRA_LATITUDE = "latitude";
+    public static final String EXTRA_LONGITUDE = "longitude";
 
 
     @Override
@@ -75,19 +71,23 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
 
         //init
         map = (MapView) findViewById(R.id.map);
-        map.setUseDataConnection(true);
         map.setTileSource(TileSourceFactory.MAPNIK);
-
         map.setBuiltInZoomControls(true);
+
         map.setMultiTouchControls(true);
         map.setMinZoomLevel(7);
-
         final IMapController mapController = map.getController();
         mapController.setZoom(13); //small road
 
-        DisplayMetrics dm = ctx.getResources().getDisplayMetrics(); //avoir les dimensions
+        DisplayMetrics dm = ctx.getResources().getDisplayMetrics();
         /***/
 
+
+        Intent intent = getIntent();
+        String latitude = intent.getStringExtra(MapActivity.EXTRA_LATITUDE)+"";
+        String longitude = intent.getStringExtra(MapActivity.EXTRA_LONGITUDE)+"";
+
+        geo = new GeoPoint(Float.valueOf(latitude), Float.valueOf(longitude));
 
         //Add point on the map
         ArrayList<OverlayItem> items = new ArrayList<>();
@@ -96,7 +96,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
 */
         items.add(creerPointInteret("Beauvais - Titre", "Beauvais - Description", 49.438,2.097));
         items.add(creerPointInteret("Rochelle - Titre", "Rochelle - Description", 46.159, -1.153));
-
+        items.add(creerPointInteret("A", "B", Float.valueOf(latitude), Float.valueOf(longitude)));
         affichePointInteret(ctx,items);
 
 
@@ -131,7 +131,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
             if(location == null)
             {
                 //cas ou le gps fonctionne mal on positionne sur Paris
-                startPoint = new GeoPoint(paris);
+                startPoint = new GeoPoint(geo);
                 TextView error_gps = (TextView) findViewById(R.id.text_error);
                 error_gps.setVisibility(TextView.VISIBLE);
             }
@@ -154,50 +154,10 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
             });
 
             final Button buttonAddPoint = (Button) findViewById(R.id.ButtonAddPoint);
-            buttonAddPoint.setText(textButton_AjoutRepere_Ajouter);
             buttonAddPoint.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     //TODO ajout d'un repère sur la carte
-                    if( buttonAddPoint.getText().toString().equals(textButton_AjoutRepere_Ajouter.toString()))
-                    {
-                        //Ici on s'occupe de la partie l'ajout d'un point sur la carte
-                        buttonAddPoint.setText(textButton_AjoutRepere_Annuler);
-
-                        estClick_surLaCarte_active = true;
-
-                        //on affiche un petit toast pour lui dire : "click sur la map pour ajouter le point"
-                        MapEventsReceiver mReceive = new MapEventsReceiver() {
-                            @Override
-                            public boolean singleTapConfirmedHelper(GeoPoint p) {
-                                Toast.makeText(getBaseContext(),p.getLatitude() + " - "+p.getLongitude(),Toast.LENGTH_LONG).show();
-
-                                return false;
-                            }
-
-                            @Override
-                            public boolean longPressHelper(GeoPoint p) {
-                                return false;
-                            }
-                        };
-
-
-                        overlayEvents = new MapEventsOverlay(mReceive);
-                        map.getOverlays().add(overlayEvents);
-
-                    }
-                    else
-                    {
-                        buttonAddPoint.setText(textButton_AjoutRepere_Ajouter);
-                        estClick_surLaCarte_active = false;
-                        if(overlayEvents != null)
-                        {
-                            map.getOverlays().remove(overlayEvents);
-                            overlayEvents = null;
-                        }
-
-                    }
-
                 }
             });
         }
@@ -226,10 +186,10 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
                     private void affichageDialog(final int index, final OverlayItem item)
                     {
                         //on met en place le dialog
-                        final Dialog dialog = new Dialog(MainActivity.this);
+                        final Dialog dialog = new Dialog(MapActivity.this);
 
                         dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
-                        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+                        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                         dialog.setContentView(R.layout.custom_dialog);
 
                         dialog.setCancelable(true);
@@ -242,11 +202,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
 
                         TextView map_popup_distance = (TextView) dialog.findViewById(R.id.map_popup_distance);
                         float[] distance = new float[1];
-                        if(location != null)
-                            Location.distanceBetween(location.getLatitude(), location.getLongitude(), item.getPoint().getLatitude(), item.getPoint().getLongitude(), distance);
-                        else
-                            Location.distanceBetween(paris.getLatitude(), paris.getLongitude(), item.getPoint().getLatitude(), item.getPoint().getLongitude(), distance);
-
+                        Location.distanceBetween(location.getLatitude(), location.getLongitude(), item.getPoint().getLatitude(), item.getPoint().getLongitude(), distance);
                         map_popup_distance.setText(distance[0]*0.001 + " km");
 
                         //On route un button pour que l'utilisateur puissent calculer son trajet en gps :
@@ -272,12 +228,9 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
                         Runnable runnable = new Runnable() {
                             @Override
                             public void run() {
-                                RoadManager roadManager = new OSRMRoadManager(MainActivity.this);
+                                RoadManager roadManager = new OSRMRoadManager(MapActivity.this);
                                 ArrayList<GeoPoint> waypoints = new ArrayList<>();
-                                if(location != null)
-                                    waypoints.add(new GeoPoint(location.getLatitude(),location.getLongitude()));
-                                else
-                                    waypoints.add(new GeoPoint(paris.getLatitude(),paris.getLongitude()));
+                                waypoints.add(new GeoPoint(location.getLatitude(),location.getLongitude()));
 
                                 waypoints.add(new GeoPoint(item.getPoint().getLatitude(), item.getPoint().getLongitude()));
 
@@ -361,7 +314,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
             focusPosition.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    map.getController().setCenter(new GeoPoint(paris));
+                    map.getController().setCenter(new GeoPoint(geo));
                 }
             });
 
@@ -404,25 +357,6 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
 
     @Override
     public void onProviderDisabled(String s) {
-
-    }
-
-    @Override
-    public boolean singleTapConfirmedHelper(GeoPoint p) {
-        if(estClick_surLaCarte_active)
-        {
-
-        }
-        return true;
-    }
-
-    @Override
-    public boolean longPressHelper(GeoPoint p) {
-        return false;
-    }
-
-    @Override
-    public void onPointerCaptureChanged(boolean hasCapture) {
 
     }
 }

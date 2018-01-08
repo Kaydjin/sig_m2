@@ -84,6 +84,22 @@ public class VilleDao {
     }
 
     /**
+     * Get one batiment by name of the database
+     */
+    public Ville getByName(String name){
+        Ville entry=null;
+        Cursor cursor = database.query(VilleTable.NAME_TABLE,
+                VilleTable.allcolumns,
+                VilleTable.KEY_COL_NOM + " = " + "'" + name + "'", null, null, null, null);
+
+        if(cursor.moveToFirst())
+            entry = this.valueOf(cursor);
+
+        cursor.close();
+        return entry;
+    }
+
+    /**
      * Useful method which returns all the batiments in the database.
      * @return the batiments as a List collection
      */

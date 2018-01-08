@@ -84,6 +84,22 @@ public class TypeBatimentDao {
     }
 
     /**
+     * Get one type of batiment of the database
+     */
+    public TypeBatiment getByName(String name){
+        TypeBatiment entry = null;
+        Cursor cursor = database.query(TypeBatimentTable.NAME_TABLE,
+                TypeBatimentTable.allcolumns,
+                TypeBatimentTable.KEY_COL_TYPE + " = " + "'" + name + "'", null, null, null, null);
+
+        if(cursor.moveToFirst())
+            entry = this.valueOf(cursor);
+
+        cursor.close();
+        return entry;
+    }
+
+    /**
      * Useful method which returns all the types of batiment in the database.
      * @return the types of batiment as a List collection
      */

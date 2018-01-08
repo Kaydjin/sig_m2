@@ -39,7 +39,7 @@
         android:clickable="true"
         app:backgroundTint="@color/colorPrimary"
         app:fabSize="mini"
-        app:srcCompat="@android:drawable/ic_menu_revert" />
+        app:srcCompat="@drawable/retour" />
 
     <RelativeLayout
         android:id="@+id/liste_layout"

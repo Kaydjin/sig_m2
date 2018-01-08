@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.sig.etu.sig.activities.MapActivity">
+
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+        <org.osmdroid.views.MapView android:id="@+id/map"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent" />
+    </LinearLayout>
+
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:gravity="bottom">
+
+        <ImageButton
+            android:id="@+id/ButtonFocusPosition"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dip"
+            android:background="@null"
+            app:srcCompat="@drawable/osm_ic_center_map" />
+
+    </LinearLayout>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical"
+        android:layout_gravity="bottom|right">
+
+        <Button
+            android:id="@+id/ButtonAddPoint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dip"
+            android:layout_alignParentRight="true"
+            android:text=" Ajout repère "
+            android:textColor="@color/black"
+            android:textAlignment="center"
+            android:background="@drawable/circle_button"
+            />
+    </LinearLayout>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical" android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="1">
+
+        <TextView
+            android:id="@+id/text_error"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorAccent"
+            android:text="Gps introuvable"
+            android:textColor="@color/white"
+            android:visibility="invisible"
+            android:textAllCaps="true"
+            android:textAlignment="center"
+            android:layout_weight="0.07"
+            android:textStyle="bold"
+            />
+    </LinearLayout>
+
+</android.support.constraint.ConstraintLayout>

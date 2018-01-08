@@ -23,7 +23,8 @@ public class PersonneDao {
     /**
      * Specify how a new personne is create in the database
      */
-    public Personne create(String nom, String adresse, int id_batiment, int id_metier) {
+    public Personne create(String nom, String adresse, int id_batiment,
+                           int id_metier, double latitude, double longitude) {
 
         long id_b = id_batiment;
         long id_m = id_metier;
@@ -32,6 +33,8 @@ public class PersonneDao {
         values.put(PersonneTable.KEY_COL_ID_METIER, id_m);
         values.put(PersonneTable.KEY_COL_NOM, nom);
         values.put(PersonneTable.KEY_COL_ADRESSE, adresse);
+        values.put(PersonneTable.KEY_COL_LATITUDE, latitude);
+        values.put(PersonneTable.KEY_COL_LONGITUDE, longitude);
 
         long insertId = database.insert(PersonneTable.NAME_TABLE, null,
                 values);
@@ -59,7 +62,8 @@ public class PersonneDao {
     /**
      * Specify how a personne is update in the database
      */
-    public Personne update(int id_entry, String nom, String adresse, int id_batiment, int id_metier) {
+    public Personne update(int id_entry, String nom, String adresse,
+                           int id_batiment, int id_metier, double latitude, double longitude) {
         long id = id_entry;
         long id_b = id_batiment;
         long id_m = id_metier;
@@ -68,6 +72,8 @@ public class PersonneDao {
         values.put(PersonneTable.KEY_COL_ID_METIER, id_m);
         values.put(PersonneTable.KEY_COL_NOM, nom);
         values.put(PersonneTable.KEY_COL_ADRESSE, adresse);
+        values.put(PersonneTable.KEY_COL_LATITUDE, latitude);
+        values.put(PersonneTable.KEY_COL_LONGITUDE, longitude);
 
         database.update(PersonneTable.NAME_TABLE, values,
                 PersonneTable.KEY_COL_ID + " = " + id, null);
@@ -122,6 +128,8 @@ public class PersonneDao {
         entry.setId_metier((int)cursor.getLong(PersonneTable.NUM_ID_METIER_COLUMN));
         entry.setNom(cursor.getString(PersonneTable.NUM_NOM_COLUMN));
         entry.setAdresse(cursor.getString(PersonneTable.NUM_ADRESSE_COLUMN));
+        entry.setLatitude(cursor.getDouble(PersonneTable.NUM_LATITUDE_COLUMN));
+        entry.setLongitude(cursor.getDouble(PersonneTable.NUM_LONGITUDE_COLUMN));
         return entry;
     }
 
