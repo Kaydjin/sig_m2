@@ -1,39 +1,39 @@
-package test.o2121076.myapplication;
+package com.sig.etu.sig.activities;
 
 import android.Manifest;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
-
 import android.view.View;
 import android.view.Window;
-
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.sig.etu.sig.R;
 
 import org.osmdroid.api.IMapController;
 import org.osmdroid.bonuspack.routing.OSRMRoadManager;
 import org.osmdroid.bonuspack.routing.Road;
 import org.osmdroid.bonuspack.routing.RoadManager;
 import org.osmdroid.config.Configuration;
+import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
-import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 import org.osmdroid.views.overlay.ItemizedIconOverlay;
 import org.osmdroid.views.overlay.ItemizedOverlayWithFocus;
 import org.osmdroid.views.overlay.OverlayItem;
@@ -41,20 +41,23 @@ import org.osmdroid.views.overlay.Polyline;
 import org.osmdroid.views.overlay.ScaleBarOverlay;
 import org.osmdroid.views.overlay.compass.CompassOverlay;
 import org.osmdroid.views.overlay.compass.InternalCompassOrientationProvider;
-
 import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider;
 import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity implements LocationListener {
+public class MapActivity extends AppCompatActivity implements LocationListener {
     MapView map;
     CompassOverlay mCompassOverlay;
-    GeoPoint paris = new GeoPoint(48.866667,2.333333);
+    //GeoPoint paris = new GeoPoint(48.866667,2.333333);
+    GeoPoint geo = null;
     Location location = null;
     Road road = null;
     Polyline polyline = null;
     Polyline roadOverlay = null;
+
+    public static final String EXTRA_LATITUDE = "latitude";
+    public static final String EXTRA_LONGITUDE = "longitude";
 
 
     @Override
@@ -80,6 +83,12 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         /***/
 
 
+        Intent intent = getIntent();
+        String latitude = intent.getStringExtra(MapActivity.EXTRA_LATITUDE)+"";
+        String longitude = intent.getStringExtra(MapActivity.EXTRA_LONGITUDE)+"";
+
+        geo = new GeoPoint(Float.valueOf(latitude), Float.valueOf(longitude));
+
         //Add point on the map
         ArrayList<OverlayItem> items = new ArrayList<>();
        /* OverlayItem o = new OverlayItem("Beauvais - Titre", "Beauvais - Description", new GeoPoint(49.438,2.097));
@@ -87,7 +96,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
 */
         items.add(creerPointInteret("Beauvais - Titre", "Beauvais - Description", 49.438,2.097));
         items.add(creerPointInteret("Rochelle - Titre", "Rochelle - Description", 46.159, -1.153));
-
+        items.add(creerPointInteret("A", "B", Float.valueOf(latitude), Float.valueOf(longitude)));
         affichePointInteret(ctx,items);
 
 
@@ -122,7 +131,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
             if(location == null)
             {
                 //cas ou le gps fonctionne mal on positionne sur Paris
-                startPoint = new GeoPoint(paris);
+                startPoint = new GeoPoint(geo);
                 TextView error_gps = (TextView) findViewById(R.id.text_error);
                 error_gps.setVisibility(TextView.VISIBLE);
             }
@@ -177,10 +186,10 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                     private void affichageDialog(final int index, final OverlayItem item)
                     {
                         //on met en place le dialog
-                        final Dialog dialog = new Dialog(MainActivity.this);
+                        final Dialog dialog = new Dialog(MapActivity.this);
 
                         dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
-                        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+                        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                         dialog.setContentView(R.layout.custom_dialog);
 
                         dialog.setCancelable(true);
@@ -219,7 +228,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                         Runnable runnable = new Runnable() {
                             @Override
                             public void run() {
-                                RoadManager roadManager = new OSRMRoadManager(MainActivity.this);
+                                RoadManager roadManager = new OSRMRoadManager(MapActivity.this);
                                 ArrayList<GeoPoint> waypoints = new ArrayList<>();
                                 waypoints.add(new GeoPoint(location.getLatitude(),location.getLongitude()));
 
@@ -305,7 +314,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
             focusPosition.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    map.getController().setCenter(new GeoPoint(paris));
+                    map.getController().setCenter(new GeoPoint(geo));
                 }
             });
 

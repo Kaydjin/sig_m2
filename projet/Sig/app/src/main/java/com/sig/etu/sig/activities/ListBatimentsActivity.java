@@ -61,22 +61,19 @@ public class ListBatimentsActivity extends AppCompatActivity {
 
 
 
-        /*mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Object o = mListView.getItemAtPosition(position);
-                Entry ent = (Entry)o;
+                Batiment ent = (Batiment)o;
 
-                Intent intent = new Intent(ListeActivity.this, DetailEntry.class);
-                intent.putExtra(EXTRA_ID, ent.getId()+"");
-                intent.putExtra(EXTRA_DATE, ent.getDate());
-                intent.putExtra(EXTRA_TITRE, ent.getTitre());
-                intent.putExtra(EXTRA_TEXTE, ent.getTexte());
-                intent.putExtra(EXTRA_IMAGE, ent.getImage());
-                startActivityForResult(intent, DetailEntry.REQUEST_CODE);
+                Intent intent = new Intent(ListBatimentsActivity.this, MapActivity.class);
+                intent.putExtra(MapActivity.EXTRA_LATITUDE, ent.getLatitude()+"");
+                intent.putExtra(MapActivity.EXTRA_LONGITUDE, ent.getLongitude()+"");
+                startActivity(intent);
             }
 
-        });*/
+        });
 
 
     }

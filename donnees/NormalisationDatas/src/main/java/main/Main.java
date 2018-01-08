@@ -37,8 +37,8 @@ public class Main {
 		p.fromCsvFile("lieux.csv");
 		
 		List<Batiment> b = p.getBatiments();
-		for(Batiment bat : b){}
-			//System.out.println(bat.getLatitude());
+		for(Ville bat : villes)
+			System.out.println(bat.getNom());
 		
 		JSONObject obj = ParserJson.parseLieuxTo(p.toCsvData());
 		

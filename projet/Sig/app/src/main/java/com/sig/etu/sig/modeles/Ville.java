@@ -55,4 +55,5 @@ public class Ville {
         result = 31 * result + nom.hashCode();
         return result;
     }
+
 }

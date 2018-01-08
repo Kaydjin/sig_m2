@@ -1,6 +1,7 @@
 package com.sig.etu.sig.activities;
 
 import android.content.Intent;
+import android.icu.text.DisplayContext;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -10,7 +11,17 @@ import android.widget.Button;
 
 import com.sig.etu.sig.R;
 import com.sig.etu.sig.bdd.BDDManager;
+import com.sig.etu.sig.modeles.Batiment;
 import com.sig.etu.sig.modeles.TypeBatiment;
+import com.sig.etu.sig.modeles.Ville;
+import com.sig.etu.sig.util.ParserCsvLieux;
+import com.sig.etu.sig.util.StringFormat;
+
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -34,14 +45,53 @@ public class MainActivity extends AppCompatActivity {
         Button button_villes = (Button)findViewById(R.id.villes);
         button_generate.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                datasource.createVille("45100", "Orléans la source");
-                datasource.createVille("75000", "Paris");
-                datasource.createTypeBatiment(TypeBatiment.Tribunaux.GRANDE_INSTANCE.toString(), "a");
-                datasource.createMetier("Notaire");
-                datasource.createMetier("Avocat");
-                datasource.createBatiment(1,1,43.02,43.02,"Nom batiment","Adresse Batiment","numero");
-                datasource.createBatiment(1,1,45.02,80.02,"Nom batiment2","Adresse Batiment2","2numero");
-                datasource.createPersonne("personne", "adresse", 1, 1);
+
+                //On efface toutes les anciennes données.
+                datasource.allRemove();
+                datasource.open();
+
+                List<TypeBatiment> typesBatiments = new ArrayList<TypeBatiment>();
+                typesBatiments.add(new TypeBatiment(TypeBatiment.Tribunaux.ENFANT.toString(),
+                        "Tribunaux pour enfants"));
+                typesBatiments.add(new TypeBatiment(TypeBatiment.Tribunaux.GRANDE_INSTANCE.toString(),
+                        "Tribunaux de grand instances"));
+                typesBatiments.add(new TypeBatiment(TypeBatiment.Tribunaux.INSTANCE.toString(),
+                        "Tribunaux d'instances"));
+                typesBatiments.add(new TypeBatiment(TypeBatiment.Tribunaux.GREFFE.toString(),
+                        "Greffes"));
+                String test = TypeBatiment.Tribunaux.GREFFE.toString();
+
+                List<Batiment> batiments = new ArrayList<Batiment>();
+                List<Ville> villes = new ArrayList<Ville>();
+
+                ParserCsvLieux p = new ParserCsvLieux(',',batiments, villes, typesBatiments);
+
+                try {
+                    InputStreamReader i = new InputStreamReader(getAssets().open("lieux.csv"), "UTF-8");
+                    p.fromCsvFileInputStream(i);
+                } catch (IOException e) {
+                    Log.e("MainActivity", "Erreur de lecture");
+                }
+
+                for(TypeBatiment tb : typesBatiments)
+                    datasource.createTypeBatiment(tb.getType(), tb.getDescription());
+                String nom;
+                for(Ville vi: villes) {
+                    nom = StringFormat.correction(vi.getNom());
+                    datasource.createVille(vi.getCode_postale().trim(), nom);
+                }
+                Ville v_inter;
+                TypeBatiment tb_inter;
+
+                for(Batiment b : batiments) {
+                    tb_inter = datasource.getTypeBatimentByName(b.getType().trim());
+                    v_inter = datasource.getVilleByName(StringFormat.correction(b.getVille()));
+                    datasource.createBatiment(tb_inter.getId(), v_inter.getId(), b.getLatitude(),
+                            b.getLongitude(), b.getNom().trim(), b.getAdresse().trim(),
+                            b.getTelephone().trim());
+                }
+                datasource.close();
+
             }
         });
         button_batiments.setOnClickListener(new View.OnClickListener() {

@@ -110,7 +110,9 @@ public class BDDManager {
     public Metier getMetier(int id_entry){ return metierDao.get(id_entry);}
     public Personne getPersonne(int id_entry){ return personneDao.get(id_entry);}
     public TypeBatiment getTypeBatiment(int id_entry){ return typeBatimentDao.get(id_entry);}
+    public TypeBatiment getTypeBatimentByName(String name){ return typeBatimentDao.getByName(name);}
     public Ville getVille(int id_entry){ return villeDao.get(id_entry);}
+    public Ville getVilleByName(String name){ return villeDao.getByName(name);}
 
     public Batiment deleteBatiment(int id_entry){ return batimentDao.delete(id_entry);}
     public Metier deleteMetier(int id_entry){ return metierDao.delete(id_entry);}
@@ -126,8 +128,8 @@ public class BDDManager {
         return metierDao.update(id_entry, nom);
     }
     public Personne updatePersonne(int id_entry, String nom, String adresse,
-                                   int id_batiment, int id_metier){
-        return personneDao.update(id_entry,nom, adresse, id_batiment, id_metier);
+                                   int id_batiment, int id_metier, double latitude, double longitude){
+        return personneDao.update(id_entry,nom, adresse, id_batiment, id_metier, latitude, longitude);
     }
     public TypeBatiment updateTypeBatiment(int id_entry,String type, String description){
         return typeBatimentDao.update(id_entry, type, description);
@@ -144,8 +146,8 @@ public class BDDManager {
         return metierDao.create(nom);
     }
     public Personne createPersonne(String nom, String adresse,
-                                   int id_batiment, int id_metier){
-        return personneDao.create(nom, adresse, id_batiment, id_metier);
+                                   int id_batiment, int id_metier, double latitude, double longitude){
+        return personneDao.create(nom, adresse, id_batiment, id_metier, latitude, longitude);
     }
     public TypeBatiment createTypeBatiment(String type, String description){
         return typeBatimentDao.create(type, description);
