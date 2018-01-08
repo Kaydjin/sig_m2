@@ -121,6 +121,29 @@ public class BatimentDao {
     }
 
     /**
+     * Useful method which returns all the batiments in the database with a certain type.
+     * @param type
+     * @return the batiments as a List collection
+     */
+    public List<Batiment> getByType(Integer type) {
+        List<Batiment> entries = new ArrayList<Batiment>();
+
+        Cursor cursor = database.query(BatimentTable.NAME_TABLE,
+                BatimentTable.allcolumns,
+                BatimentTable.KEY_COL_ID_TYPE + " = " + type, null, null, null, null);
+
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()) {
+            Batiment entry = this.valueOf(cursor);
+            entries.add(entry);
+            cursor.moveToNext();
+        }
+        // assurez-vous de la fermeture du curseur
+        cursor.close();
+        return entries;
+    }
+
+    /**
      * Transform the result of a query in a class type format
      */
     private Batiment valueOf(Cursor cursor) {

@@ -20,7 +20,7 @@ public class ParserJson {
 	 * @param datas
 	 * @return
 	 */
-	public static String parseToString(String type, 
+	private static String parseToString(String type,
 			List<String[]> datas, String[] header, boolean ignore_header){
 		String res = " { \""+type+"\": [";
 		int i;

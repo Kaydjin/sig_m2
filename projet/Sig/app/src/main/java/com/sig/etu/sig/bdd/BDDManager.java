@@ -21,6 +21,7 @@ import com.sig.etu.sig.modeles.Personne;
 import com.sig.etu.sig.modeles.TypeBatiment;
 import com.sig.etu.sig.modeles.Ville;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -106,6 +107,30 @@ public class BDDManager {
     public List<Ville> getAllVilles(){ return villeDao.getAll();}
     public List<TypeBatiment> getAllTypesBatiments(){ return typeBatimentDao.getAll();}
 
+    //Filtres
+    public List<Batiment> getBatimentsFilterDpType(Integer code, String choixType) {
+        List<Batiment> entries = this.getBatimentsFilterType(choixType);
+        List<Batiment> finaux = new ArrayList<Batiment>();
+        for(Batiment b : entries)
+            if(this.getVille(b.getId_ville()).getCode_postale().equals(code+""))
+                finaux.add(b);
+
+        return finaux;
+    }
+    public List<Batiment> getBatimentsFilterType(String choixType) {
+        Integer id = this.getTypeBatimentByName(choixType).getId();
+        return batimentDao.getByType(id);
+    }
+    public List<Batiment> getBatimentsFilterDepartement(Integer code) {
+        List<Batiment> entries = this.getAllBatiments();
+        List<Batiment> finaux = new ArrayList<Batiment>();
+        for(Batiment b : entries)
+            if(this.getVille(b.getId_ville()).getCode_postale().equals(code+""))
+                finaux.add(b);
+
+        return finaux;
+    }
+
     public Batiment getBatiment(int id_entry){ return batimentDao.get(id_entry);}
     public Metier getMetier(int id_entry){ return metierDao.get(id_entry);}
     public Personne getPersonne(int id_entry){ return personneDao.get(id_entry);}
@@ -158,4 +183,5 @@ public class BDDManager {
     public boolean isOpen() {
         return open;
     }
+
 }

@@ -48,10 +48,10 @@ public class ParserCsvLieux {
     	for(Batiment b : batiments) {
     		String[] entry = new String[8];
     		entry[0] = b.getNom();
-    		entry[1] = typesBatiments.get(b.getId_type()).getType();
+    		entry[1] = typesBatiments.get(b.getId_type()-1).getType();
     		entry[2] = b.getAdresse().replace("\"", "");
-    		entry[3] = villes.get(b.getId_ville()).getCode_postale();
-    		entry[4] = villes.get(b.getId_ville()).getNom();
+    		entry[3] = villes.get(b.getId_ville()-1).getCode_postale();
+    		entry[4] = villes.get(b.getId_ville()-1).getNom();
     		entry[5] = b.getTelephone();
     		entry[6] = ""+b.getLatitude();
     		entry[7] = ""+b.getLongitude();

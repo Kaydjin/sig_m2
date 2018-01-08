@@ -31,8 +31,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
         datasource = new BDDManager(this);
         datasource.open();
@@ -47,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 //On efface toutes les anciennes données.
-                datasource.allRemove();
+                //datasource.allRemove();
                 datasource.open();
 
                 List<TypeBatiment> typesBatiments = new ArrayList<TypeBatiment>();

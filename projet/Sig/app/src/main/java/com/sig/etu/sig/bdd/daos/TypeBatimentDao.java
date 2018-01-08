@@ -120,6 +120,8 @@ public class TypeBatimentDao {
         return entries;
     }
 
+
+
     /**
      * Transform the result of a query in a class type format
      */

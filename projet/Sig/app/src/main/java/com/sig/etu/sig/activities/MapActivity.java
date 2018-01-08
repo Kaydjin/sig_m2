@@ -25,7 +25,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.sig.etu.sig.R;
+import com.sig.etu.sig.modeles.Batiment;
+import com.sig.etu.sig.modeles.TypeBatiment;
+import com.sig.etu.sig.modeles.Ville;
+import com.sig.etu.sig.util.ParserCsvLieux;
+import com.sig.etu.sig.util.ParserJson;
 
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.osmdroid.api.IMapController;
 import org.osmdroid.bonuspack.routing.OSRMRoadManager;
 import org.osmdroid.bonuspack.routing.Road;
@@ -45,11 +52,12 @@ import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider;
 import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class MapActivity extends AppCompatActivity implements LocationListener {
     MapView map;
     CompassOverlay mCompassOverlay;
-    //GeoPoint paris = new GeoPoint(48.866667,2.333333);
+    GeoPoint paris = new GeoPoint(48.866667,2.333333);
     GeoPoint geo = null;
     Location location = null;
     Road road = null;
@@ -58,6 +66,7 @@ public class MapActivity extends AppCompatActivity implements LocationListener {
 
     public static final String EXTRA_LATITUDE = "latitude";
     public static final String EXTRA_LONGITUDE = "longitude";
+    public static final String EXTRA_LIEUX = "lieux";
 
 
     @Override
@@ -86,17 +95,34 @@ public class MapActivity extends AppCompatActivity implements LocationListener {
         Intent intent = getIntent();
         String latitude = intent.getStringExtra(MapActivity.EXTRA_LATITUDE)+"";
         String longitude = intent.getStringExtra(MapActivity.EXTRA_LONGITUDE)+"";
-
-        geo = new GeoPoint(Float.valueOf(latitude), Float.valueOf(longitude));
+        String lieux = intent.getStringExtra(MapActivity.EXTRA_LIEUX)+"";
 
         //Add point on the map
         ArrayList<OverlayItem> items = new ArrayList<>();
-       /* OverlayItem o = new OverlayItem("Beauvais - Titre", "Beauvais - Description", new GeoPoint(49.438,2.097));
-        OverlayItem o2 = new OverlayItem("Rochelle - Titre", "Rochelle - Description", new GeoPoint(46.159, -1.153));
-*/
-        items.add(creerPointInteret("Beauvais - Titre", "Beauvais - Description", 49.438,2.097));
-        items.add(creerPointInteret("Rochelle - Titre", "Rochelle - Description", 46.159, -1.153));
-        items.add(creerPointInteret("A", "B", Float.valueOf(latitude), Float.valueOf(longitude)));
+
+        //Demande d'affichage d'un seul point.
+        if(lieux.equals("")) {
+            //geo = new GeoPoint(Float.valueOf(latitude), Float.valueOf(longitude));
+            items.add(creerPointInteret("A", "B", Float.valueOf(latitude), Float.valueOf(longitude)));
+        }else{
+            try {
+                JSONObject json = new JSONObject(lieux);
+                List<String[]> datas = ParserJson.parseLieuxFrom(json);
+                ArrayList<Batiment> batiments = new ArrayList<Batiment>();
+                ParserCsvLieux pcl = new ParserCsvLieux(',',batiments,
+                        new ArrayList<Ville>(), new ArrayList<TypeBatiment>());
+                pcl.fromCsvData(datas);
+
+                for(Batiment b : batiments){
+                    items.add(creerPointInteret(b.getNom(),
+                            b.getAdresse()+"\n"
+                                    +b.getTelephone()+"\n", b.getLatitude(), b.getLongitude()));
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+        }
         affichePointInteret(ctx,items);
 
 
@@ -131,7 +157,7 @@ public class MapActivity extends AppCompatActivity implements LocationListener {
             if(location == null)
             {
                 //cas ou le gps fonctionne mal on positionne sur Paris
-                startPoint = new GeoPoint(geo);
+                startPoint = new GeoPoint(paris);
                 TextView error_gps = (TextView) findViewById(R.id.text_error);
                 error_gps.setVisibility(TextView.VISIBLE);
             }
@@ -314,7 +340,7 @@ public class MapActivity extends AppCompatActivity implements LocationListener {
             focusPosition.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    map.getController().setCenter(new GeoPoint(geo));
+                    map.getController().setCenter(new GeoPoint(paris));
                 }
             });
 

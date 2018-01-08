@@ -39,8 +39,6 @@ public class ListVillesActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.liste);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
         //We used the database to get all existing entries.
         datasource = new BDDManager(this);
         datasource.open();
@@ -49,18 +47,6 @@ public class ListVillesActivity extends AppCompatActivity {
         mListView = (ListView) findViewById(R.id.liste);
         adapter = new VilleListAdapter(ListVillesActivity.this, entries);
         mListView.setAdapter(adapter);
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.retour);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(ListVillesActivity.this, MainActivity.class);
-                startActivity(intent);
-                finish();
-            }
-        });
-
-
 
         /*mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
