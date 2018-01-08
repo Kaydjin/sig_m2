@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:layout_width="match_parent"
+    android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <LinearLayout
@@ -29,39 +28,11 @@
             android:text="" />
     </LinearLayout>
 
-
-
     <LinearLayout
         android:id="@+id/l2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/l1"
-        android:layout_marginLeft="5dp"
-        android:layout_marginTop="3dp"
-        android:orientation="vertical">
-
-        <TextView
-            android:id="@+id/text_Ville"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Ville"
-            android:textStyle="bold"
-            android:typeface="serif"/>
-
-        <EditText
-            android:id="@+id/edit_Ville"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="textAutoComplete"
-            android:text="" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/l3"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/l2"
         android:layout_marginLeft="5dp"
         android:layout_marginTop="3dp"
         android:orientation="vertical">
@@ -84,50 +55,24 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/l4"
+        android:id="@+id/l3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/l3"
+        android:layout_below="@+id/l2"
         android:layout_marginLeft="5dp"
         android:layout_marginTop="3dp"
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/text_CodePostale"
+            android:id="@+id/text_Metier"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Code Postale"
-            android:textStyle="bold"
-            android:typeface="serif"/>
-
-        <EditText
-            android:id="@+id/edit_CodePostale"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="number"
-            android:text="" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/l5"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/l4"
-        android:layout_marginLeft="5dp"
-        android:layout_marginTop="3dp"
-        android:orientation="vertical">
-
-        <TextView
-            android:id="@+id/text_Type"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Type de batiment"
+            android:text="Métier"
             android:textStyle="bold"
             android:typeface="serif"/>
 
         <Spinner
-            android:id="@+id/edit_Type"
+            android:id="@+id/edit_Metier"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
@@ -135,37 +80,6 @@
             android:text=""
             android:layout_marginBottom="10dp"/>
     </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/l6"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/l5"
-        android:layout_marginLeft="5dp"
-        android:layout_marginTop="3dp"
-        android:orientation="vertical">
-
-        <TextView
-            android:id="@+id/text_Telephone"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textStyle="bold"
-            android:text="Telephone"
-            android:typeface="serif"
-
-            />
-
-        <EditText
-            android:id="@+id/edit_Telephone"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="phone"
-            android:text=""
-            />
-
-    </LinearLayout>
-
 
     <LinearLayout
         android:layout_width="match_parent"
