@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -85,7 +86,7 @@ public class MapActivity extends AppCompatActivity implements LocationListener {
     public static final String EXTRA_LATITUDE = "latitude";
     public static final String EXTRA_LONGITUDE = "longitude";
     public static final String EXTRA_LIEUX = "lieux";
-    public static final String EXTRA_PERSONNES = "lieux";
+    public static final String EXTRA_PERSONNES = "personnes";
 
 
     @Override
@@ -218,58 +219,91 @@ public class MapActivity extends AppCompatActivity implements LocationListener {
                 }
             });
 
-            final Button buttonAddPoint = (Button) findViewById(R.id.ButtonAddPoint);
-            buttonAddPoint.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if( buttonAddPoint.getText().toString().equals(textButton_AjoutRepere_Ajouter.toString()))
-                    {
-                        Toast.makeText(ctx, "Vous pouvez ajouter un point", Toast.LENGTH_LONG).show();
-                        //Ici on s'occupe de la partie l'ajout d'un point sur la carte
-                        buttonAddPoint.setText(textButton_AjoutRepere_Annuler);
-                        //on affiche un petit toast pour lui dire : "click sur la map pour ajouter le point"
-                        MapEventsReceiver mReceive = new MapEventsReceiver() {
-                            @Override
-                            public boolean singleTapConfirmedHelper(GeoPoint p) {
-                                //Toast.makeText(getBaseContext(),p.getLatitude() + " - "+p.getLongitude(),Toast.LENGTH_LONG).show();
-                                coord_new_point = p;
-                                Intent intent = new Intent(ctx, FormulaireActivity.class);
-                                startActivityForResult(intent, 0);
-
-                                return false;
-                            }
-
-                            @Override
-                            public boolean longPressHelper(GeoPoint p) {
-                                return false;
-                            }
-                        };
-
-
-                        overlayEvents = new MapEventsOverlay(mReceive);
-                        map.getOverlays().add(overlayEvents);
-
-                    }
-                    else
-                    {
-                        buttonAddPoint.setText(textButton_AjoutRepere_Ajouter);
-                        if(overlayEvents != null)
-                        {
-                            map.getOverlays().remove(overlayEvents);
-                            overlayEvents = null;
-                        }
-
-                    }
-                }
-            });
+            gestionButtonAddPoint(ctx);
         }
 
     }
 
+    private void gestionButtonAddPoint(final Context ctx)
+    {
+        final Button buttonAddPoint = (Button) findViewById(R.id.ButtonAddPoint);
+        buttonAddPoint.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if( buttonAddPoint.getText().toString().equals(textButton_AjoutRepere_Ajouter.toString()))
+                {
+                    Toast.makeText(ctx, "Vous pouvez ajouter un point", Toast.LENGTH_LONG).show();
+                    //Ici on s'occupe de la partie l'ajout d'un point sur la carte
+                    buttonAddPoint.setText(textButton_AjoutRepere_Annuler);
+                    //on affiche un petit toast pour lui dire : "click sur la map pour ajouter le point"
+                    MapEventsReceiver mReceive = new MapEventsReceiver() {
+                        @Override
+                        public boolean singleTapConfirmedHelper(GeoPoint p) {
+                            //Toast.makeText(getBaseContext(),p.getLatitude() + " - "+p.getLongitude(),Toast.LENGTH_LONG).show();
+                            coord_new_point = p;
+                            Intent intent = new Intent(ctx, FormulaireActivity.class);
+                            startActivityForResult(intent, 0);
+
+                            return false;
+                        }
+
+                        @Override
+                        public boolean longPressHelper(GeoPoint p) {
+                            return false;
+                        }
+                    };
+
+
+                    overlayEvents = new MapEventsOverlay(mReceive);
+                    map.getOverlays().add(overlayEvents);
+
+                }
+                else
+                {
+                    buttonAddPoint.setText(textButton_AjoutRepere_Ajouter);
+                    if(overlayEvents != null)
+                    {
+                        map.getOverlays().remove(overlayEvents);
+                        overlayEvents = null;
+                    }
+
+                }
+            }
+        });
+    }
+
+
+
     //Creer un point d'interet sur la carte
+
+    /**
+     * Creer l'overlayitem qui pourra etre affiché sur la map
+     * @param titre Titre en gras
+     * @param description les autre informations utile
+     * @param latitude
+     * @param longitude
+     * @return
+     */
     public OverlayItem creerPointInteret(String titre, String description, double latitude, double longitude)
     {
         return new OverlayItem(titre,description,new GeoPoint(latitude,longitude));
+    }
+
+    //Creer un point d'interet sur la carte
+
+    /**
+     * Au lieu d'avoir l'icone par defaut on en a un autre
+     * @param titre
+     * @param description
+     * @param latitude
+     * @param longitude
+     * @return
+     */
+    public OverlayItem creerPointInteretPersonne(String titre, String description, double latitude, double longitude)
+    {
+        OverlayItem overlayItem=  new OverlayItem(titre,description,new GeoPoint(latitude,longitude));
+        overlayItem.setMarker(ResourcesCompat.getDrawable(getResources(),R.drawable.person,null));
+        return overlayItem;
     }
 
     //affiche la liste des point d'interets avec leur description losqu'on clique dessus
@@ -318,6 +352,23 @@ public class MapActivity extends AppCompatActivity implements LocationListener {
                                 gpsChemin(index,item);
                             }
                         });
+
+                        ImageButton map_popup_buttonAddPersonn =  (ImageButton) dialog.findViewById(R.id.map_popup_buttonAddPersonn);
+                        map_popup_buttonAddPersonn.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                //Ici on lance le nouvel ajout de personne pour ce batiment
+                                dialog.cancel(); // On ferme le dialogue
+
+                                Toast.makeText(ctx, "Ajouter un affilié", Toast.LENGTH_LONG).show();
+
+                                //TODO garder en mémoire le nom du batiment selectionner* + action cliquer sur la carte* + "button cancel"
+                                /*Intent intent = new Intent(ctx, FormulairePersonneActivity.class);
+                                 startActivityForResult(intent, 1);*/
+
+                            }
+                        });
+
                         map.getController().setCenter(item.getPoint()); // On centre dessus :)
                         dialog.show();
                     }
@@ -360,19 +411,13 @@ public class MapActivity extends AppCompatActivity implements LocationListener {
                                             roadOverlay = RoadManager.buildRoadOverlay(road);
                                             map.getOverlays().add(roadOverlay);
                                         }
-
                                     }
                                 });
-
-
                             }
                         };
-
                         new Thread(runnable).start();
-
                         Log.e("route", "Le calcul est en cours");
                     }
-
                     @Override
                     public boolean onItemLongPress(final int index, final OverlayItem item) {
 
@@ -394,6 +439,50 @@ public class MapActivity extends AppCompatActivity implements LocationListener {
                         map.getOverlays().add(polyline);
 
                         return true;
+                    }
+                })
+        );
+    }
+
+    public void affichePointInteretPersonne(final Context ctx, ArrayList<OverlayItem> items )
+    {
+        map.getOverlays().add(new ItemizedOverlayWithFocus<>(ctx, items,
+                new ItemizedIconOverlay.OnItemGestureListener<OverlayItem>() {
+
+                    @Override
+                    public boolean onItemSingleTapUp(final int index, final OverlayItem item) {
+
+                        affichageDialog(index, item);
+                        return true;
+                    }
+
+                    private void affichageDialog(final int index, final OverlayItem item)
+                    {
+                        //on met en place le dialog
+                        final Dialog dialog = new Dialog(MapActivity.this);
+
+                        dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+                        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                        dialog.setContentView(R.layout.custom_dialog);
+
+                        dialog.setCancelable(true);
+
+                        TextView map_popup_header = (TextView) dialog.findViewById(R.id.map_popup_header);
+                        map_popup_header.setText(item.getTitle());
+
+                        TextView map_popup_body = (TextView) dialog.findViewById(R.id.map_popup_body);
+                        map_popup_body.setText(item.getSnippet());
+
+                        TextView map_popup_distance = (TextView) dialog.findViewById(R.id.map_popup_distance);
+                        float[] distance = new float[1];
+                        Location.distanceBetween(location.getLatitude(), location.getLongitude(), item.getPoint().getLatitude(), item.getPoint().getLongitude(), distance);
+                        map_popup_distance.setText(distance[0] + " m");
+
+                    }
+
+                    @Override
+                    public boolean onItemLongPress(final int index, final OverlayItem item) {
+                        return false;
                     }
                 })
         );
@@ -462,7 +551,7 @@ public class MapActivity extends AppCompatActivity implements LocationListener {
 
     }
 
-    //On récupere de la partie de FormulaireActivity
+    //On récupere de la partie de Formulaire
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         // Retour 0 pour le formulaire
@@ -473,16 +562,35 @@ public class MapActivity extends AppCompatActivity implements LocationListener {
                 String adresse = data.getStringExtra("Adresse");
                 String codePostal = data.getStringExtra("CodePostale");
                 String telephone = data.getStringExtra("Telephone");
-                //TODO  String type = data.getStringExtra("Type");
                 String ville = data.getStringExtra("Ville");
+                String type = data.getStringExtra("Type");
 
                 personnel.add(creerPointInteret(nom,
-                        ville + "\n" +
-                                adresse + " " +
-                                codePostal + "\n" +
+                                adresse + "\n" +
                                 telephone
                         , coord_new_point.getLatitude(),coord_new_point.getLongitude()));
                 affichePointInteret(getApplicationContext(),personnel);
+
+                //TODO récuperer les autres informations
+            }
+            //Sinon on ne fait rien
+        }
+        if (requestCode == 1) {
+            if(requestCode == RESULT_OK)
+            {
+                String nom = data.getStringExtra("Nom");
+                String adresse = data.getStringExtra("Adresse");
+                String metier = data.getStringExtra("Metier");
+
+
+                ArrayList<OverlayItem> personne = new ArrayList<>();
+                personne.add(creerPointInteretPersonne(nom,
+                        adresse + "\n" +
+                                metier
+                        , coord_new_point.getLatitude(),coord_new_point.getLongitude()));
+
+
+                affichePointInteretPersonne(getApplicationContext(),personne);
             }
             //Sinon on ne fait rien
         }
