@@ -41,11 +41,13 @@ import org.osmdroid.bonuspack.routing.OSRMRoadManager;
 import org.osmdroid.bonuspack.routing.Road;
 import org.osmdroid.bonuspack.routing.RoadManager;
 import org.osmdroid.config.Configuration;
+import org.osmdroid.events.MapEventsReceiver;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.ItemizedIconOverlay;
 import org.osmdroid.views.overlay.ItemizedOverlayWithFocus;
+import org.osmdroid.views.overlay.MapEventsOverlay;
 import org.osmdroid.views.overlay.OverlayItem;
 import org.osmdroid.views.overlay.Polyline;
 import org.osmdroid.views.overlay.ScaleBarOverlay;
@@ -62,10 +64,21 @@ public class MapActivity extends AppCompatActivity implements LocationListener {
     CompassOverlay mCompassOverlay;
     GeoPoint paris = new GeoPoint(48.866667,2.333333);
     GeoPoint geo = null;
+    GeoPoint coord_new_point = null;
     Location location = null;
     Road road = null;
     Polyline polyline = null;
     Polyline roadOverlay = null;
+
+    final CharSequence textButton_AjoutRepere_Ajouter = " ON";
+    final CharSequence textButton_AjoutRepere_Annuler = " OFF ";
+
+    MapEventsOverlay overlayEvents = null;
+
+    //Permet l'ajout de point sur la carte
+    ArrayList<OverlayItem> items = new ArrayList<>();
+    //Point ajouter par l'utilisateur
+    ArrayList<OverlayItem> personnel = new ArrayList<>();
 
     public static final String EXTRA_NOM = "nom";
     public static final String EXTRA_DESCRIPTION = "description";
@@ -86,11 +99,13 @@ public class MapActivity extends AppCompatActivity implements LocationListener {
 
         //init
         map = (MapView) findViewById(R.id.map);
+        map.setUseDataConnection(true);
         map.setTileSource(TileSourceFactory.MAPNIK);
-        map.setBuiltInZoomControls(true);
 
+        map.setBuiltInZoomControls(true);
         map.setMultiTouchControls(true);
         map.setMinZoomLevel(7);
+
         final IMapController mapController = map.getController();
         mapController.setZoom(13); //small road
 
@@ -105,9 +120,6 @@ public class MapActivity extends AppCompatActivity implements LocationListener {
         String longitude = intent.getStringExtra(MapActivity.EXTRA_LONGITUDE)+"";
         String lieux = intent.getStringExtra(MapActivity.EXTRA_LIEUX)+"";
         String personnes = intent.getStringExtra(MapActivity.EXTRA_PERSONNES)+"";
-
-        //Add point on the map
-        ArrayList<OverlayItem> items = new ArrayList<>();
 
         //Demande d'affichage d'un seul point.
         if(lieux.equals("")&& personnes.equals("")) {
@@ -210,7 +222,44 @@ public class MapActivity extends AppCompatActivity implements LocationListener {
             buttonAddPoint.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    //TODO ajout d'un repère sur la carte
+                    if( buttonAddPoint.getText().toString().equals(textButton_AjoutRepere_Ajouter.toString()))
+                    {
+                        Toast.makeText(ctx, "Vous pouvez ajouter un point", Toast.LENGTH_LONG).show();
+                        //Ici on s'occupe de la partie l'ajout d'un point sur la carte
+                        buttonAddPoint.setText(textButton_AjoutRepere_Annuler);
+                        //on affiche un petit toast pour lui dire : "click sur la map pour ajouter le point"
+                        MapEventsReceiver mReceive = new MapEventsReceiver() {
+                            @Override
+                            public boolean singleTapConfirmedHelper(GeoPoint p) {
+                                //Toast.makeText(getBaseContext(),p.getLatitude() + " - "+p.getLongitude(),Toast.LENGTH_LONG).show();
+                                coord_new_point = p;
+                                Intent intent = new Intent(ctx, FormulaireActivity.class);
+                                startActivityForResult(intent, 0);
+
+                                return false;
+                            }
+
+                            @Override
+                            public boolean longPressHelper(GeoPoint p) {
+                                return false;
+                            }
+                        };
+
+
+                        overlayEvents = new MapEventsOverlay(mReceive);
+                        map.getOverlays().add(overlayEvents);
+
+                    }
+                    else
+                    {
+                        buttonAddPoint.setText(textButton_AjoutRepere_Ajouter);
+                        if(overlayEvents != null)
+                        {
+                            map.getOverlays().remove(overlayEvents);
+                            overlayEvents = null;
+                        }
+
+                    }
                 }
             });
         }
@@ -411,5 +460,31 @@ public class MapActivity extends AppCompatActivity implements LocationListener {
     @Override
     public void onProviderDisabled(String s) {
 
+    }
+
+    //On récupere de la partie de FormulaireActivity
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // Retour 0 pour le formulaire
+        if (requestCode == 0) {
+            // Cas ou on va ajouter
+            if (resultCode == RESULT_OK) {
+                String nom = data.getStringExtra("Nom");
+                String adresse = data.getStringExtra("Adresse");
+                String codePostal = data.getStringExtra("CodePostale");
+                String telephone = data.getStringExtra("Telephone");
+                //TODO  String type = data.getStringExtra("Type");
+                String ville = data.getStringExtra("Ville");
+
+                personnel.add(creerPointInteret(nom,
+                        ville + "\n" +
+                                adresse + " " +
+                                codePostal + "\n" +
+                                telephone
+                        , coord_new_point.getLatitude(),coord_new_point.getLongitude()));
+                affichePointInteret(getApplicationContext(),personnel);
+            }
+            //Sinon on ne fait rien
+        }
     }
 }

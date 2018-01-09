@@ -1,4 +1,4 @@
-package test.o2121076.myapplication;
+package com.sig.etu.sig.activities;
 
 import android.content.Context;
 import android.content.Intent;
@@ -10,17 +10,18 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 
+import com.sig.etu.sig.R;
+
 /**
  * Created by o2121076 on 08/01/18.
  */
 
-public class FormulaireActivity extends AppCompatActivity{
-
-
+public class FormulairePersonneActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_formulaire);
+
+        setContentView(R.layout.activity_formulaire_personne);
         final Context ctx = getApplicationContext();
 
         Button valider = (Button) findViewById(R.id.button_valider);
@@ -34,17 +35,11 @@ public class FormulaireActivity extends AppCompatActivity{
 
                     EditText edit_Nom = (EditText) findViewById(R.id.edit_Nom);
                     EditText edit_Adresse = (EditText) findViewById(R.id.edit_Adresse);
-                    EditText edit_CodePostale = (EditText) findViewById(R.id.edit_CodePostale);
-                    EditText edit_Telephone = (EditText) findViewById(R.id.edit_Telephone);
-                    Spinner edit_Type = (Spinner) findViewById(R.id.edit_Type);
-                    EditText edit_Ville = (EditText) findViewById(R.id.edit_Ville);
+                    Spinner edit_Metier = (Spinner) findViewById(R.id.edit_Metier);
 
                     returnIntent.putExtra("Nom",edit_Nom.getText().toString());
                     returnIntent.putExtra("Adresse",edit_Adresse.getText().toString());
-                    returnIntent.putExtra("CodePostale",edit_CodePostale.getText().toString());
-                    returnIntent.putExtra("Telephone",edit_Telephone.getText().toString());
-                    //returnIntent.putExtra("Type",edit_Type.get); TODO
-                    returnIntent.putExtra("Ville",edit_Ville.getText().toString());
+                    //returnIntent.putExtra("Metier",edit_Metier.getText().toString());;
 
                     setResult(FormulaireActivity.RESULT_OK,returnIntent);
                     finish();
@@ -73,10 +68,7 @@ public class FormulaireActivity extends AppCompatActivity{
         String messageErreur = "Ce champ doit être rempli.";
         EditText edit_Nom = (EditText) findViewById(R.id.edit_Nom);
         EditText edit_Adresse = (EditText) findViewById(R.id.edit_Adresse);
-        EditText edit_CodePostale = (EditText) findViewById(R.id.edit_CodePostale);
-        EditText edit_Telephone = (EditText) findViewById(R.id.edit_Telephone);
-        Spinner edit_Type = (Spinner) findViewById(R.id.edit_Type); //TODO la liste des type :D
-        EditText edit_Ville = (EditText) findViewById(R.id.edit_Ville);
+        Spinner edit_Metier = (Spinner) findViewById(R.id.edit_Metier); //TODO la liste des type :D;
 
 
         String str = edit_Nom.getText().toString();
@@ -88,24 +80,6 @@ public class FormulaireActivity extends AppCompatActivity{
         str = edit_Adresse.getText().toString();
         if(TextUtils.isEmpty(str)) {
             edit_Adresse.setError(messageErreur);
-            return false;
-        }
-
-        str = edit_CodePostale.getText().toString();
-        if(TextUtils.isEmpty(str)) {
-            edit_CodePostale.setError(messageErreur);
-            return false;
-        }
-
-        str = edit_Telephone.getText().toString();
-        if(TextUtils.isEmpty(str)) {
-            edit_Telephone.setError(messageErreur);
-            return false;
-        }
-
-        str = edit_Ville.getText().toString();
-        if(TextUtils.isEmpty(str)) {
-            edit_Ville.setError(messageErreur);
             return false;
         }
 

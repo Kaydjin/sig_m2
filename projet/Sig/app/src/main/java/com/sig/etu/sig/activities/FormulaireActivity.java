@@ -1,4 +1,4 @@
-package test.o2121076.myapplication;
+package com.sig.etu.sig.activities;
 
 import android.content.Context;
 import android.content.Intent;
@@ -10,11 +10,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 
+import com.sig.etu.sig.R;
+
 /**
- * Created by o2121076 on 08/01/18.
+ * Created by o2121076 on 09/01/18.
  */
 
-public class FormulaireActivity extends AppCompatActivity{
+public class FormulaireActivity extends AppCompatActivity {
 
 
     @Override
