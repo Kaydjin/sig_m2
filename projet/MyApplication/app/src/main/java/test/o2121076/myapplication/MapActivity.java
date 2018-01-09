@@ -39,7 +39,6 @@ import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 import org.osmdroid.views.overlay.ItemizedIconOverlay;
 import org.osmdroid.views.overlay.ItemizedOverlayWithFocus;
 import org.osmdroid.views.overlay.MapEventsOverlay;
-import org.osmdroid.views.overlay.Overlay;
 import org.osmdroid.views.overlay.OverlayItem;
 import org.osmdroid.views.overlay.Polyline;
 import org.osmdroid.views.overlay.ScaleBarOverlay;
@@ -51,7 +50,7 @@ import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity implements LocationListener{
+public class MapActivity extends AppCompatActivity implements LocationListener{
     MapView map;
     CompassOverlay mCompassOverlay;
     GeoPoint paris = new GeoPoint(48.866667,2.333333);
@@ -162,9 +161,9 @@ public class MainActivity extends AppCompatActivity implements LocationListener{
             buttonAddPoint.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    //TODO ajout d'un repère sur la carte
                     if( buttonAddPoint.getText().toString().equals(textButton_AjoutRepere_Ajouter.toString()))
                     {
+                        Toast.makeText(ctx, "Vous pouvez ajouter un point", Toast.LENGTH_LONG).show();
                         //Ici on s'occupe de la partie l'ajout d'un point sur la carte
                         buttonAddPoint.setText(textButton_AjoutRepere_Annuler);
                         //on affiche un petit toast pour lui dire : "click sur la map pour ajouter le point"
@@ -229,7 +228,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener{
                     private void affichageDialog(final int index, final OverlayItem item)
                     {
                         //on met en place le dialog
-                        final Dialog dialog = new Dialog(MainActivity.this);
+                        final Dialog dialog = new Dialog(MapActivity.this);
 
                         dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
                         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
@@ -275,7 +274,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener{
                         Runnable runnable = new Runnable() {
                             @Override
                             public void run() {
-                                RoadManager roadManager = new OSRMRoadManager(MainActivity.this);
+                                RoadManager roadManager = new OSRMRoadManager(MapActivity.this);
                                 ArrayList<GeoPoint> waypoints = new ArrayList<>();
                                 if(location != null)
                                     waypoints.add(new GeoPoint(location.getLatitude(),location.getLongitude()));
@@ -430,7 +429,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener{
                         codePostal + "\n" +
                         telephone
                         , coord_new_point.getLatitude(),coord_new_point.getLongitude()));
-                affichePointInteret(getApplicationContext(),items);
+                affichePointInteret(getApplicationContext(),personnel);
             }
             //Sinon on ne fait rien
         }

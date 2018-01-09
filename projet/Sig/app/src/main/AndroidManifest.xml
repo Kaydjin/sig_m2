@@ -44,6 +44,17 @@
             android:name=".activities.MapActivity"
             android:label="Map activity"
             android:theme="@style/AppTheme.NoActionBar" />
+
+        <activity
+            android:name=".activities.FormulaireActivity"
+            android:label="Map activity"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <activity
+            android:name=".activities.FormulairePersonneActivity"
+            android:label="Map activity"
+            android:theme="@style/AppTheme.NoActionBar" />
+
     </application>
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
