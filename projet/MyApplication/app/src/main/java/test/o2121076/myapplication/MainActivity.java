@@ -165,6 +165,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener{
                     //TODO ajout d'un repère sur la carte
                     if( buttonAddPoint.getText().toString().equals(textButton_AjoutRepere_Ajouter.toString()))
                     {
+                        Toast.makeText(ctx, "Vous pouvez ajouter un point", Toast.LENGTH_LONG).show();
                         //Ici on s'occupe de la partie l'ajout d'un point sur la carte
                         buttonAddPoint.setText(textButton_AjoutRepere_Annuler);
                         //on affiche un petit toast pour lui dire : "click sur la map pour ajouter le point"
@@ -430,7 +431,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener{
                         codePostal + "\n" +
                         telephone
                         , coord_new_point.getLatitude(),coord_new_point.getLongitude()));
-                affichePointInteret(getApplicationContext(),items);
+                affichePointInteret(getApplicationContext(),personnel);
             }
             //Sinon on ne fait rien
         }
