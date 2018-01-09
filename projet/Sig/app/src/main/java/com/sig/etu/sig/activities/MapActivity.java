@@ -116,7 +116,7 @@ public class MapActivity extends AppCompatActivity implements LocationListener {
                 for(Batiment b : batiments){
                     items.add(creerPointInteret(b.getNom(),
                             b.getAdresse()+"\n"
-                                    +b.getTelephone()+"\n", b.getLatitude(), b.getLongitude()));
+                                    +b.getTelephone(), b.getLatitude(), b.getLongitude()));
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
