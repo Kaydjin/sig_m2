@@ -12,6 +12,7 @@ import android.widget.Button;
 import com.sig.etu.sig.R;
 import com.sig.etu.sig.bdd.BDDManager;
 import com.sig.etu.sig.modeles.Batiment;
+import com.sig.etu.sig.modeles.Metier;
 import com.sig.etu.sig.modeles.TypeBatiment;
 import com.sig.etu.sig.modeles.Ville;
 import com.sig.etu.sig.util.ParserCsvLieux;
@@ -35,63 +36,11 @@ public class MainActivity extends AppCompatActivity {
         datasource = new BDDManager(this);
         datasource.open();
 
-        Button button_generate = (Button)findViewById(R.id.generate);
         Button button_batiments = (Button)findViewById(R.id.batiments);
         Button button_metiers = (Button)findViewById(R.id.metiers);
         Button button_personnes = (Button)findViewById(R.id.personnes);
         Button button_types_batiments = (Button)findViewById(R.id.types_batiments);
         Button button_villes = (Button)findViewById(R.id.villes);
-        button_generate.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-
-                //On efface toutes les anciennes données.
-                //datasource.allRemove();
-                datasource.open();
-
-                List<TypeBatiment> typesBatiments = new ArrayList<TypeBatiment>();
-                typesBatiments.add(new TypeBatiment(TypeBatiment.Tribunaux.ENFANT.toString(),
-                        "Tribunaux pour enfants"));
-                typesBatiments.add(new TypeBatiment(TypeBatiment.Tribunaux.GRANDE_INSTANCE.toString(),
-                        "Tribunaux de grand instances"));
-                typesBatiments.add(new TypeBatiment(TypeBatiment.Tribunaux.INSTANCE.toString(),
-                        "Tribunaux d'instances"));
-                typesBatiments.add(new TypeBatiment(TypeBatiment.Tribunaux.GREFFE.toString(),
-                        "Greffes"));
-                String test = TypeBatiment.Tribunaux.GREFFE.toString();
-
-                List<Batiment> batiments = new ArrayList<Batiment>();
-                List<Ville> villes = new ArrayList<Ville>();
-
-                ParserCsvLieux p = new ParserCsvLieux(',',batiments, villes, typesBatiments);
-
-                try {
-                    InputStreamReader i = new InputStreamReader(getAssets().open("lieux.csv"), "UTF-8");
-                    p.fromCsvFileInputStream(i);
-                } catch (IOException e) {
-                    Log.e("MainActivity", "Erreur de lecture");
-                }
-
-                for(TypeBatiment tb : typesBatiments)
-                    datasource.createTypeBatiment(tb.getType(), tb.getDescription());
-                String nom;
-                for(Ville vi: villes) {
-                    nom = StringFormat.correction(vi.getNom());
-                    datasource.createVille(vi.getCode_postale().trim(), nom);
-                }
-                Ville v_inter;
-                TypeBatiment tb_inter;
-
-                for(Batiment b : batiments) {
-                    tb_inter = datasource.getTypeBatimentByName(b.getType().trim());
-                    v_inter = datasource.getVilleByName(StringFormat.correction(b.getVille()));
-                    datasource.createBatiment(tb_inter.getId(), v_inter.getId(), b.getLatitude(),
-                            b.getLongitude(), b.getNom().trim(), b.getAdresse().trim(),
-                            b.getTelephone().trim());
-                }
-                datasource.close();
-
-            }
-        });
         button_batiments.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Intent resultIntent = new Intent(MainActivity.this, ListBatimentsActivity.class);

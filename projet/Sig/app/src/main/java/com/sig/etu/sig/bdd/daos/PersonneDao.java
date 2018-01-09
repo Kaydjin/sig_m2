@@ -98,6 +98,45 @@ public class PersonneDao {
     }
 
     /**
+     * Get one personne of the database by address
+     */
+    public Personne getByAddress(String address){
+        Personne entry = null;
+        Cursor cursor = database.query(PersonneTable.NAME_TABLE,
+                PersonneTable.allcolumns,
+                PersonneTable.KEY_COL_ADRESSE + " = " + "'" + address + "'", null, null, null, null);
+
+        if(cursor.moveToFirst())
+            entry = this.valueOf(cursor);
+
+        cursor.close();
+        return entry;
+    }
+
+    /**
+     * Useful method which returns all the personnes in the database with a name
+     * @param name
+     * @return the personnes as a List collection
+     */
+    public List<Personne> getByName(String name) {
+        List<Personne> entries = new ArrayList<Personne>();
+
+        Cursor cursor = database.query(PersonneTable.NAME_TABLE,
+                PersonneTable.allcolumns,
+                PersonneTable.KEY_COL_NOM + " LIKE " + "'" + name + "'", null, null, null, null);
+
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()) {
+            Personne entry = this.valueOf(cursor);
+            entries.add(entry);
+            cursor.moveToNext();
+        }
+        // assurez-vous de la fermeture du curseur
+        cursor.close();
+        return entries;
+    }
+
+    /**
      * Useful method which returns all the personnes in the database.
      * @return the personnes as a List collection
      */

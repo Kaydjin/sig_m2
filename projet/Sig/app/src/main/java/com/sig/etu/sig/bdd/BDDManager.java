@@ -76,6 +76,22 @@ public class BDDManager {
     }
 
     /**
+     * Tell if the database is empty or not.
+     * @return a boolean
+     */
+    public boolean empty(){
+        if(!open){
+            this.open();
+        }
+
+        //If there is no type batiment, then basic insertion is not done so the database is empty.
+        if(typeBatimentDao.get(1)==null)
+            return true;
+
+        return false;
+    }
+
+    /**
      * Close the link to the database.
      */
     public void close() {
@@ -184,4 +200,15 @@ public class BDDManager {
         return open;
     }
 
+    public Personne getPersonneByAdresse(String adresse) {
+        return personneDao.getByAddress(adresse);
+    }
+
+    public List<Personne> getPersonneByName(String name) {
+        return personneDao.getByName(name);
+    }
+
+    public Batiment getBatimentByName(String nom) {
+        return batimentDao.getByName(nom);
+    }
 }

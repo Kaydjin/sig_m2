@@ -43,35 +43,14 @@
             android:layout_marginLeft="10dp"/>
 
         <TextView
-            android:id="@+id/longitude"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Longitude"
-            android:textColor="@android:color/black"
-            app:layout_constraintTop_toBottomOf="@+id/type"
-            app:layout_constraintLeft_toRightOf="parent"
-            android:layout_marginLeft="30dp"/>
-
-        <TextView
-            android:id="@+id/latitude"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/longitude"
-            android:text="Latitude"
-            android:textColor="@android:color/black"
-            app:layout_constraintTop_toBottomOf="@+id/type"
-            app:layout_constraintLeft_toRightOf="@+id/longitude"
-            android:layout_marginLeft="10dp"/>
-
-        <TextView
             android:id="@+id/telephone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Telephone"
             android:textColor="@android:color/black"
             app:layout_constraintTop_toBottomOf="@+id/type"
-            app:layout_constraintLeft_toRightOf="@+id/latitude"
-            android:layout_marginLeft="10dp" />
+            app:layout_constraintLeft_toRightOf="parent"
+            android:layout_marginLeft="30dp" />
 
         <TextView
             android:id="@+id/adresse"
@@ -81,7 +60,7 @@
             android:layout_below="@+id/nom"
             android:text="Adresse"
             android:textColor="@android:color/black"
-            app:layout_constraintTop_toBottomOf="@+id/latitude"
+            app:layout_constraintTop_toBottomOf="@+id/telephone"
             app:layout_constraintLeft_toRightOf="parent"
             android:layout_marginLeft="30dp" />
 

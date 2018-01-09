@@ -8,52 +8,69 @@
     tools:context="com.sig.etu.sig.activities.MainActivity"
     tools:showIn="@layout/activity_main">
 
-    <Button
-        android:id="@+id/generate"
-        android:layout_width="368dp"
+    <TextView
+        android:id="@+id/entete"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Generate"
+        android:text="Menu"
+        android:gravity="center"
         app:layout_constraintTop_toBottomOf="parent"
-        app:layout_constraintLeft_toRightOf="parent" />
+        app:layout_constraintLeft_toRightOf="parent"
+        android:layout_marginLeft="50dp"
+        android:layout_marginTop="50dp"
+        android:textSize="40dp"/>
 
     <Button
         android:id="@+id/batiments"
         android:layout_width="368dp"
         android:layout_height="72dp"
-        android:text="Batiments"
-        app:layout_constraintTop_toBottomOf="@+id/generate"
-        app:layout_constraintLeft_toRightOf="parent" />
-
-    <Button
-        android:id="@+id/metiers"
-        android:layout_width="368dp"
-        android:layout_height="72dp"
-        android:text="Metiers"
-        app:layout_constraintTop_toBottomOf="@+id/batiments"
-        app:layout_constraintLeft_toRightOf="parent" />
+        android:text="Lieux de justices"
+        app:layout_constraintTop_toBottomOf="@id/entete"
+        app:layout_constraintLeft_toRightOf="parent"
+        android:layout_marginTop="20dp"/>
 
     <Button
         android:id="@+id/personnes"
         android:layout_width="368dp"
         android:layout_height="72dp"
-        android:text="Personnes"
-        app:layout_constraintTop_toBottomOf="@+id/metiers"
+        android:text="Cabinets personnels"
+        app:layout_constraintTop_toBottomOf="@+id/batiments"
+        app:layout_constraintLeft_toRightOf="parent" />
+
+    <TextView
+        android:id="@+id/entete2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Les options"
+        android:gravity="center"
+        app:layout_constraintTop_toBottomOf="@id/personnes"
+        app:layout_constraintLeft_toRightOf="parent"
+        android:layout_marginLeft="50dp"
+        android:layout_marginTop="50dp"
+        android:textSize="25dp"/>
+
+    <Button
+        android:id="@+id/villes"
+        android:layout_width="368dp"
+        android:layout_height="50dp"
+        android:text="Villes"
+        app:layout_constraintLeft_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/entete2" />
+
+    <Button
+        android:id="@+id/metiers"
+        android:layout_width="368dp"
+        android:layout_height="50dp"
+        android:text="Metiers"
+        app:layout_constraintTop_toBottomOf="@+id/villes"
         app:layout_constraintLeft_toRightOf="parent" />
 
     <Button
         android:id="@+id/types_batiments"
         android:layout_width="368dp"
-        android:layout_height="72dp"
+        android:layout_height="50dp"
         android:text="Types batiments"
         app:layout_constraintLeft_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/personnes" />
-
-    <Button
-        android:id="@+id/villes"
-        android:layout_width="368dp"
-        android:layout_height="72dp"
-        android:text="Villes"
-        app:layout_constraintLeft_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/types_batiments" />
+        app:layout_constraintTop_toBottomOf="@+id/metiers" />
 
 </android.support.constraint.ConstraintLayout>

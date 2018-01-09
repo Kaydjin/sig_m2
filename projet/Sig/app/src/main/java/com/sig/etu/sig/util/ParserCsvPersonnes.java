@@ -49,8 +49,8 @@ public class ParserCsvPersonnes {
     		String[] entry = new String[6];
     		entry[0] = p.getNom();
     		entry[1] = p.getAdresse();
-    		entry[2] = batiments.get(p.getId_batiment()).getNom();
-    		entry[3] = metiers.get(p.getId_metier()).getNom();
+    		entry[2] = batiments.get(p.getId_batiment()-1).getNom();
+    		entry[3] = metiers.get(p.getId_metier()-1).getNom();
 			entry[4] = p.getLatitude()+"";
 			entry[5] = p.getLongitude()+"";
     		datas.add(entry);

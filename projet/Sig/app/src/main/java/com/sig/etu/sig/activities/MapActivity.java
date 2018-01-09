@@ -26,9 +26,12 @@ import android.widget.Toast;
 
 import com.sig.etu.sig.R;
 import com.sig.etu.sig.modeles.Batiment;
+import com.sig.etu.sig.modeles.Metier;
+import com.sig.etu.sig.modeles.Personne;
 import com.sig.etu.sig.modeles.TypeBatiment;
 import com.sig.etu.sig.modeles.Ville;
 import com.sig.etu.sig.util.ParserCsvLieux;
+import com.sig.etu.sig.util.ParserCsvPersonnes;
 import com.sig.etu.sig.util.ParserJson;
 
 import org.json.JSONException;
@@ -64,9 +67,12 @@ public class MapActivity extends AppCompatActivity implements LocationListener {
     Polyline polyline = null;
     Polyline roadOverlay = null;
 
+    public static final String EXTRA_NOM = "nom";
+    public static final String EXTRA_DESCRIPTION = "description";
     public static final String EXTRA_LATITUDE = "latitude";
     public static final String EXTRA_LONGITUDE = "longitude";
     public static final String EXTRA_LIEUX = "lieux";
+    public static final String EXTRA_PERSONNES = "lieux";
 
 
     @Override
@@ -93,33 +99,54 @@ public class MapActivity extends AppCompatActivity implements LocationListener {
 
 
         Intent intent = getIntent();
+        String nom = intent.getStringExtra(MapActivity.EXTRA_NOM)+"";
+        String description = intent.getStringExtra(MapActivity.EXTRA_DESCRIPTION)+"";
         String latitude = intent.getStringExtra(MapActivity.EXTRA_LATITUDE)+"";
         String longitude = intent.getStringExtra(MapActivity.EXTRA_LONGITUDE)+"";
         String lieux = intent.getStringExtra(MapActivity.EXTRA_LIEUX)+"";
+        String personnes = intent.getStringExtra(MapActivity.EXTRA_PERSONNES)+"";
 
         //Add point on the map
         ArrayList<OverlayItem> items = new ArrayList<>();
 
         //Demande d'affichage d'un seul point.
-        if(lieux.equals("")) {
-            //geo = new GeoPoint(Float.valueOf(latitude), Float.valueOf(longitude));
-            items.add(creerPointInteret("A", "B", Float.valueOf(latitude), Float.valueOf(longitude)));
+        if(lieux.equals("")&& personnes.equals("")) {
+            items.add(creerPointInteret(nom, description, Float.valueOf(latitude), Float.valueOf(longitude)));
         }else{
-            try {
-                JSONObject json = new JSONObject(lieux);
-                List<String[]> datas = ParserJson.parseLieuxFrom(json);
-                ArrayList<Batiment> batiments = new ArrayList<Batiment>();
-                ParserCsvLieux pcl = new ParserCsvLieux(',',batiments,
-                        new ArrayList<Ville>(), new ArrayList<TypeBatiment>());
-                pcl.fromCsvData(datas);
+            if(!lieux.equals("")) {
+                try {
+                    JSONObject json = new JSONObject(lieux);
+                    List<String[]> datas = ParserJson.parseLieuxFrom(json);
+                    ArrayList<Batiment> batiments = new ArrayList<Batiment>();
+                    ParserCsvLieux pcl = new ParserCsvLieux(',', batiments,
+                            new ArrayList<Ville>(), new ArrayList<TypeBatiment>());
+                    pcl.fromCsvData(datas);
 
-                for(Batiment b : batiments){
-                    items.add(creerPointInteret(b.getNom(),
-                            b.getAdresse()+"\n"
-                                    +b.getTelephone(), b.getLatitude(), b.getLongitude()));
+                    for (Batiment b : batiments) {
+                        items.add(creerPointInteret(b.getNom(),
+                                b.getAdresse() + "\n"
+                                        + b.getTelephone(), b.getLatitude(), b.getLongitude()));
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
-            } catch (JSONException e) {
-                e.printStackTrace();
+            }
+            if(!personnes.equals("")){
+                try {
+                    JSONObject json = new JSONObject(personnes);
+                    List<String[]> datas = ParserJson.parsePersonnesFrom(json);
+                    ArrayList<Personne> pers = new ArrayList<Personne>();
+                    ParserCsvPersonnes pcl = new ParserCsvPersonnes(',', new ArrayList<Batiment>(),
+                            new ArrayList<Metier>(), pers);
+                    pcl.fromCsvData(datas);
+
+                    for (Personne p : pers) {
+                        items.add(creerPointInteret(p.getNom(),
+                                p.getAdresse(), p.getLatitude(), p.getLongitude()));
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
 
         }

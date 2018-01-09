@@ -100,6 +100,24 @@ public class BatimentDao {
     }
 
     /**
+     * Get one batiment of the database
+     * @param nom
+     * @return
+     */
+    public Batiment getByName(String nom) {
+        Batiment entry=null;
+        Cursor cursor = database.query(BatimentTable.NAME_TABLE,
+                BatimentTable.allcolumns,
+                BatimentTable.KEY_COL_NOM + " = " + "'" + nom + "'", null, null, null, null);
+
+        if(cursor.moveToFirst())
+            entry = this.valueOf(cursor);
+
+        cursor.close();
+        return entry;
+    }
+
+    /**
      * Useful method which returns all the batiments in the database.
      * @return the batiments as a List collection
      */
@@ -162,4 +180,5 @@ public class BatimentDao {
     public void setDatabase(SQLiteDatabase database) {
         this.database = database;
     }
+
 }

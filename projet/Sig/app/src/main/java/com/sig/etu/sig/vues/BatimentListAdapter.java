@@ -30,8 +30,6 @@ public class BatimentListAdapter extends ArrayAdapter<Batiment> {
             viewHolder = new BatimentViewHolder();
             viewHolder.nom = convertView.findViewById(R.id.nom);
             viewHolder.adresse = convertView.findViewById(R.id.adresse);
-            viewHolder.latitude = convertView.findViewById(R.id.latitude);
-            viewHolder.longitude = convertView.findViewById(R.id.longitude);
             viewHolder.telephone = convertView.findViewById(R.id.telephone);
             viewHolder.type = convertView.findViewById(R.id.type);
             viewHolder.ville = convertView.findViewById(R.id.ville);
@@ -45,8 +43,6 @@ public class BatimentListAdapter extends ArrayAdapter<Batiment> {
         //il ne reste plus qu'à remplir notre vue
         viewHolder.nom.setText(batiment.getNom());
         viewHolder.adresse.setText(batiment.getAdresse());
-        viewHolder.latitude.setText(((Double)batiment.getLatitude()).toString());
-        viewHolder.longitude.setText(((Double)batiment.getLongitude()).toString());
         viewHolder.telephone.setText(batiment.getTelephone());
         viewHolder.type.setText(batiment.getType());
         viewHolder.ville.setText(batiment.getVille());
@@ -55,8 +51,6 @@ public class BatimentListAdapter extends ArrayAdapter<Batiment> {
     }
 
     private class BatimentViewHolder {
-        public TextView latitude;
-        public TextView longitude;
         public TextView telephone;
         public TextView nom;
         public TextView adresse;
