@@ -72,7 +72,7 @@ public class MapActivity extends AppCompatActivity implements LocationListener {
     public static final String EXTRA_LATITUDE = "latitude";
     public static final String EXTRA_LONGITUDE = "longitude";
     public static final String EXTRA_LIEUX = "lieux";
-    public static final String EXTRA_PERSONNES = "lieux";
+    public static final String EXTRA_PERSONNES = "personnes";
 
 
     @Override
@@ -110,7 +110,7 @@ public class MapActivity extends AppCompatActivity implements LocationListener {
         ArrayList<OverlayItem> items = new ArrayList<>();
 
         //Demande d'affichage d'un seul point.
-        if(lieux.equals("")&& personnes.equals("")) {
+        if(lieux.equals("")&&personnes.equals("")) {
             items.add(creerPointInteret(nom, description, Float.valueOf(latitude), Float.valueOf(longitude)));
         }else{
             if(!lieux.equals("")) {

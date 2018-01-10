@@ -66,7 +66,6 @@ public class ListBatimentsActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 Object o = spinner.getItemAtPosition(position);
                 choixType = (String)o;
-                Log.e("ici", "spinnerchoixtype");
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {}
@@ -90,7 +89,6 @@ public class ListBatimentsActivity extends AppCompatActivity {
                 Object o = spinner2.getItemAtPosition(position);
                 String ent = (String)o;
                 choixDepartement = ent;
-                Log.e("ici", "spinner2choixdepartement");
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {}
