@@ -1,7 +1,7 @@
 package main;
 
-import model.Ipv4;
 import controller.ServerChatControlInterface;
+import model.Ipv4;
 
 public class Main {
 

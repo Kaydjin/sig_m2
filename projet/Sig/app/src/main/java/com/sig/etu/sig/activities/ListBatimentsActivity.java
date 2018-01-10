@@ -142,6 +142,7 @@ public class ListBatimentsActivity extends AppCompatActivity {
                 JSONObject object = ParserJson.parseLieuxTo(new ParserCsvLieux(',',entries, datasource.getAllVilles(),
                         datasource.getAllTypesBatiments()).toCsvData());
                 Intent intent = new Intent(ListBatimentsActivity.this, MapActivity.class);
+                intent.putExtra(MapActivity.EXTRA_TYPE, "");
                 intent.putExtra(MapActivity.EXTRA_NOM, "");
                 intent.putExtra(MapActivity.EXTRA_DESCRIPTION, "");
                 intent.putExtra(MapActivity.EXTRA_LATITUDE, "");
@@ -162,6 +163,7 @@ public class ListBatimentsActivity extends AppCompatActivity {
                 Batiment envoi = datasource.getBatimentByName(ent.getNom());
 
                 Intent intent = new Intent(ListBatimentsActivity.this, MapActivity.class);
+                intent.putExtra(MapActivity.EXTRA_TYPE, "batiment");
                 intent.putExtra(MapActivity.EXTRA_NOM, envoi.getNom());
                 intent.putExtra(MapActivity.EXTRA_DESCRIPTION,envoi.getAdresse()+"\n"
                         +envoi.getTelephone());

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bonuspack_bubble">
+
+    <LinearLayout
+        android:id="@+id/map_popup_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/map_popup_header"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="3dp"
+            android:layout_marginTop="3dp"
+            android:layout_weight="1"
+            android:text="Nom de la personne"
+            android:textSize="15dp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/map_popup_body"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/map_popup_header"
+            android:layout_below="@+id/map_popup_header"
+            android:layout_marginTop="5dp"
+            android:layout_weight="1"
+            android:text="adresse"
+            android:textSize="12dp" />
+
+        <TextView
+            android:id="@+id/map_popup_body2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/map_popup_header"
+            android:layout_below="@+id/map_popup_body"
+            android:layout_marginTop="5dp"
+            android:layout_weight="1"
+            android:text="metier"
+            android:textSize="12dp" />
+
+        <TextView
+            android:id="@+id/map_popup_distance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/map_popup_body"
+            android:layout_marginTop="5dp"
+            android:layout_weight="1"
+            android:text="Distance : "
+            android:textSize="12dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_below="@+id/map_popup_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:orientation="horizontal">
+
+        <ImageButton
+            android:id="@+id/map_popup_buttonAfficherPersonne"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/map_popup_buttonAddPersonn"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="3dp"
+            android:layout_weight="1"
+            android:background="@null"
+            android:src="@drawable/center" />
+    </LinearLayout>
+
+</RelativeLayout>

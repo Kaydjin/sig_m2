@@ -92,7 +92,9 @@ public class ParserCsvPersonnes {
         for(String[] d : datas){
         	
         	Batiment b = existBatiment(d[2]);
-        	
+        	if(b==null){
+				batiments.add(new Batiment(0,0,0,0,"inter", "inter", "inter"));
+			}
         	//Gestion du batiment : le batiment doit exister avant
         	if(b!=null){
         		

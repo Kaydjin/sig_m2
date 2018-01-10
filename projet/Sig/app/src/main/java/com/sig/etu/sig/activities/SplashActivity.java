@@ -91,7 +91,7 @@ public class SplashActivity extends AppCompatActivity {
             tb_inter = datasource.getTypeBatimentByName(b.getType().trim());
             v_inter = datasource.getVilleByName(StringFormat.correction(b.getVille()));
             datasource.createBatiment(tb_inter.getId(), v_inter.getId(), b.getLatitude(),
-                    b.getLongitude(), b.getNom().trim(), b.getAdresse().trim(),
+                    b.getLongitude(), b.getNom().trim(), StringFormat.correction(b.getAdresse()),
                     b.getTelephone().trim());
         }
 
