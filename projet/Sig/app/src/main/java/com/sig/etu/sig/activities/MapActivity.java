@@ -128,6 +128,7 @@ public class MapActivity extends AppCompatActivity implements LocationListener {
 
         datasource = new BDDManager(this);
         //Demande d'affichage d'un seul point.
+
         if(lieux.equals("")&& personnes.equals("")) {
             if(type.equals("personne"))
                 cabinets.add(creerPointInteretPersonne(nom, description, Float.valueOf(latitude), Float.valueOf(longitude)));
