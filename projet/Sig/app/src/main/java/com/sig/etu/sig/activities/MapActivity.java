@@ -356,7 +356,7 @@ public class MapActivity extends AppCompatActivity implements LocationListener {
                         Location.distanceBetween(location.getLatitude(), location.getLongitude(), item.getPoint().getLatitude(), item.getPoint().getLongitude(), distance);
                         //On cast en int pour arrondir
                         int distanceArrondi = (int)distance[0];
-                        map_popup_distance.setText(distanceArrondi*0.001 + " km");
+                        map_popup_distance.setText("Distance :"+distanceArrondi*0.001 + " km");
 
                         //On route un button pour que l'utilisateur puissent calculer son trajet en gps :
 
@@ -539,16 +539,26 @@ public class MapActivity extends AppCompatActivity implements LocationListener {
 
                         dialog.setCancelable(true);
 
+                        //A refaire, je recupere le personne via l'item pour pouvoir afficher son métier sans le passé par le Snippet
+
+
                         TextView map_popup_header = (TextView) dialog.findViewById(R.id.map_popup_header);
                         map_popup_header.setText(item.getTitle());
 
                         TextView map_popup_body = (TextView) dialog.findViewById(R.id.map_popup_body);
                         map_popup_body.setText(item.getSnippet());
 
+                        datasource.open();
+                        Personne personne = datasource.getPersonneByAdresse(item.getSnippet());
+                        TextView map_popup_body2 = (TextView) dialog.findViewById(R.id.map_popup_body2);
+                        // TODO modification pour personne.getMetier() qui me retourne vide
+                        map_popup_body2.setText(datasource.getMetier(personne.getId_metier()).getNom());
+                        datasource.close();
+
                         TextView map_popup_distance = (TextView) dialog.findViewById(R.id.map_popup_distance);
                         float[] distance = new float[1];
                         Location.distanceBetween(location.getLatitude(), location.getLongitude(), item.getPoint().getLatitude(), item.getPoint().getLongitude(), distance);
-                        map_popup_distance.setText((int)distance[0] + " m");
+                        map_popup_distance.setText("Distance :"+(int)distance[0] + " m");
 
                         ImageButton map_popup_buttonAfficherPersonne = (ImageButton) dialog.findViewById(R.id.map_popup_buttonAfficherPersonne);
                         map_popup_buttonAfficherPersonne.setOnClickListener(new View.OnClickListener() {

@@ -19,7 +19,7 @@
             android:layout_marginLeft="3dp"
             android:layout_marginTop="3dp"
             android:layout_weight="1"
-            android:text="TextView"
+            android:text="Nom batiment"
             android:textSize="15dp"
             android:textStyle="bold" />
 
@@ -31,7 +31,7 @@
             android:layout_below="@+id/map_popup_header"
             android:layout_marginTop="5dp"
             android:layout_weight="1"
-            android:text="TextView"
+            android:text="Description du batiment"
             android:textSize="12dp" />
 
         <TextView
