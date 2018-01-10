@@ -34,9 +34,11 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("Menu");
 
         datasource = new BDDManager(this);
-        datasource.open();
 
         Button button_batiments = (Button)findViewById(R.id.batiments);
         Button button_metiers = (Button)findViewById(R.id.metiers);
@@ -92,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_supprimer){
             datasource.allRemove();
-            finish();
+            generate();
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -112,5 +114,65 @@ public class MainActivity extends AppCompatActivity {
         if(datasource.isOpen())
             datasource.close();
         super.onPause();
+    }
+
+    private void generate(){
+
+        datasource.open();
+
+        //Batiments:
+        List<TypeBatiment> typesBatiments = new ArrayList<TypeBatiment>();
+        typesBatiments.add(new TypeBatiment(TypeBatiment.Tribunaux.ENFANT.toString(),
+                "Tribunaux pour enfants"));
+        typesBatiments.add(new TypeBatiment(TypeBatiment.Tribunaux.GRANDE_INSTANCE.toString(),
+                "Tribunaux de grand instances"));
+        typesBatiments.add(new TypeBatiment(TypeBatiment.Tribunaux.INSTANCE.toString(),
+                "Tribunaux d'instances"));
+        typesBatiments.add(new TypeBatiment(TypeBatiment.Tribunaux.GREFFE.toString(),
+                "Greffes"));
+        String test = TypeBatiment.Tribunaux.GREFFE.toString();
+
+        List<Batiment> batiments = new ArrayList<Batiment>();
+        List<Ville> villes = new ArrayList<Ville>();
+
+        ParserCsvLieux p = new ParserCsvLieux(',',batiments, villes, typesBatiments);
+
+        try {
+            InputStreamReader i = new InputStreamReader(getAssets().open("lieux.csv"), "UTF-8");
+            p.fromCsvFileInputStream(i);
+        } catch (IOException e) {
+            Log.e("MainActivity", "Erreur de lecture");
+        }
+
+        for(TypeBatiment tb : typesBatiments)
+            datasource.createTypeBatiment(tb.getType(), tb.getDescription());
+        String nom;
+        for(Ville vi: villes) {
+            nom = StringFormat.correction(vi.getNom());
+            datasource.createVille(vi.getCode_postale().trim(), nom);
+        }
+        Ville v_inter;
+        TypeBatiment tb_inter;
+
+        for(Batiment b : batiments) {
+            tb_inter = datasource.getTypeBatimentByName(b.getType().trim());
+            v_inter = datasource.getVilleByName(StringFormat.correction(b.getVille()));
+            datasource.createBatiment(tb_inter.getId(), v_inter.getId(), b.getLatitude(),
+                    b.getLongitude(), b.getNom().trim(), StringFormat.correction(b.getAdresse()),
+                    b.getTelephone().trim());
+        }
+
+        //Personnes:
+
+        // Metiers: Avocat, notaire, huisser
+        List<String> metiers = new ArrayList<String>();
+        metiers.add("Avocat");
+        metiers.add("Notaire");
+        metiers.add("Huissier");
+
+        for(String s : metiers)
+            datasource.createMetier(s);
+
+        datasource.close();
     }
 }

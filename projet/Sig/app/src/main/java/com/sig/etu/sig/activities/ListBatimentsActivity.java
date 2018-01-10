@@ -100,6 +100,7 @@ public class ListBatimentsActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
+                datasource.open();
                 //Filtre departement
                 if(!choixDepartement.equals("All") || !choixType.equals("All")){
                     if(!choixType.equals("All")){
@@ -124,6 +125,8 @@ public class ListBatimentsActivity extends AppCompatActivity {
                 if(adapter ==null)Log.e("ici","erreur5");
                 mListView.setAdapter(adapter);
                 adapter.notifyDataSetChanged();
+
+                datasource.close();
             }
         });
 
@@ -139,6 +142,7 @@ public class ListBatimentsActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                datasource.open();
                 JSONObject object = ParserJson.parseLieuxTo(new ParserCsvLieux(',',entries, datasource.getAllVilles(),
                         datasource.getAllTypesBatiments()).toCsvData());
                 Intent intent = new Intent(ListBatimentsActivity.this, MapActivity.class);
@@ -150,6 +154,7 @@ public class ListBatimentsActivity extends AppCompatActivity {
                 intent.putExtra(MapActivity.EXTRA_LIEUX, object.toString());
                 intent.putExtra(MapActivity.EXTRA_PERSONNES, "");
                 startActivity(intent);
+                datasource.close();
             }
         });
 
@@ -158,6 +163,7 @@ public class ListBatimentsActivity extends AppCompatActivity {
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                datasource.open();
                 Object o = mListView.getItemAtPosition(position);
                 Batiment ent = (Batiment)o;
                 Batiment envoi = datasource.getBatimentByName(ent.getNom());
@@ -172,10 +178,11 @@ public class ListBatimentsActivity extends AppCompatActivity {
                 intent.putExtra(MapActivity.EXTRA_LIEUX, "");
                 intent.putExtra(MapActivity.EXTRA_PERSONNES, "");
                 startActivity(intent);
+                datasource.close();
             }
 
         });
 
-
+        datasource.close();
     }
 }

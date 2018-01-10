@@ -34,7 +34,7 @@ public class ListTypeBatimentsActivity extends AppCompatActivity {
         datasource = new BDDManager(this);
         datasource.open();
         List<TypeBatiment> entries = datasource.getAllTypesBatiments();
-
+        datasource.close();
         mListView = (ListView) findViewById(R.id.liste);
         adapter = new TypeBatimentListAdapter(ListTypeBatimentsActivity.this, entries);
         mListView.setAdapter(adapter);

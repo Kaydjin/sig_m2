@@ -43,6 +43,8 @@ public class ListPersonnesActivity extends AppCompatActivity {
         datasource = new BDDManager(this);
         datasource.open();
         entries = datasource.getAllPersonnes();
+        datasource.close();
+
         mListView = (ListView) findViewById(R.id.liste);
         adapter = new PersonneListAdapter(ListPersonnesActivity.this, entries);
         mListView.setAdapter(adapter);
@@ -52,7 +54,7 @@ public class ListPersonnesActivity extends AppCompatActivity {
         buttonFiltre.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                datasource.open();
                 //Filtre search
                 String search =  ((EditText)findViewById(R.id.search)).getText().toString()+"";
                 entries = datasource.getPersonneByName(search);
@@ -65,6 +67,7 @@ public class ListPersonnesActivity extends AppCompatActivity {
                 adapter = new PersonneListAdapter(ListPersonnesActivity.this, entries);
                 mListView.setAdapter(adapter);
                 adapter.notifyDataSetChanged();
+                datasource.close();
             }
         });
 
@@ -73,6 +76,7 @@ public class ListPersonnesActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                datasource.open();
                 JSONObject object = ParserJson.parsePersonneTo(
                         new ParserCsvPersonnes(',',
                                 datasource.getAllBatiments(),
@@ -87,6 +91,7 @@ public class ListPersonnesActivity extends AppCompatActivity {
                 intent.putExtra(MapActivity.EXTRA_LIEUX, "");
                 intent.putExtra(MapActivity.EXTRA_PERSONNES, object.toString());
                 startActivity(intent);
+                datasource.close();
             }
         });
 
@@ -95,6 +100,7 @@ public class ListPersonnesActivity extends AppCompatActivity {
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                datasource.open();
                 Object o = mListView.getItemAtPosition(position);
                 Personne ent = (Personne)o;
                 Personne envoi = datasource.getPersonneByAdresse(ent.getAdresse());
@@ -107,34 +113,11 @@ public class ListPersonnesActivity extends AppCompatActivity {
                 intent.putExtra(MapActivity.EXTRA_LIEUX, "");
                 intent.putExtra(MapActivity.EXTRA_PERSONNES, "");
                 startActivity(intent);
+                datasource.close();
             }
 
         });
 
-    }
-
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds batiments to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_liste, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_supprimer){
-            datasource.allRemove();
-            finish();
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
     }
 
 

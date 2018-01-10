@@ -27,7 +27,7 @@ public class ListVillesActivity extends AppCompatActivity {
         datasource = new BDDManager(this);
         datasource.open();
         List<Ville> entries = datasource.getAllVilles();
-
+        datasource.close();
         mListView = (ListView) findViewById(R.id.liste);
         adapter = new VilleListAdapter(ListVillesActivity.this, entries);
         mListView.setAdapter(adapter);

@@ -1,4 +1,4 @@
 <resources>
     <string name="app_name">Sig</string>
-    <string name="action_supprimer">Supprimer Tous</string>
+    <string name="action_supprimer">Réinitialiser</string>
 </resources>
