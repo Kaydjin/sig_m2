@@ -13,22 +13,28 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/search"
-            android:layout_height="40dp"
+            android:id="@+id/search_label"
+            android:layout_height="wrap_content"
             android:layout_width="match_parent"
             app:layout_constraintTop_toBottomOf="parent"
             app:layout_constraintLeft_toRightOf="parent"
+            android:textSize="20dp"
+            android:text="Search nom:" />
+
+        <EditText
+            android:id="@+id/search"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:textSize="30dp"
-            android:text="Search..." />
+            android:inputType="textPersonName"
+            android:text="" />
 
 
         <Button
             android:id="@+id/buttonFiltre"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Chercher"
-            app:layout_constraintLeft_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/search" />
+            android:text="Chercher"/>
 
         <include
             layout="@layout/liste"

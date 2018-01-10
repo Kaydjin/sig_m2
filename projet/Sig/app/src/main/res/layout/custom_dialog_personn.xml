@@ -62,30 +62,7 @@
             android:layout_marginTop="3dp"
             android:layout_weight="1"
             android:background="@null"
-            android:src="@drawable/person" />
-
-        <ImageButton
-            android:id="@+id/map_popup_buttonAddPersonn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_below="@+id/map_popup_buttonGps"
-            android:layout_marginRight="5dp"
-            android:layout_marginTop="3dp"
-            android:layout_weight="1"
-            android:background="@null"
-            android:src="@drawable/add_personne" />
-
-        <ImageButton
-            android:id="@+id/map_popup_buttonGps"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_below="@+id/map_popup_header"
-            android:layout_marginRight="5dp"
-            android:layout_weight="1"
-            android:background="@null"
-            android:src="@drawable/navto_small" />
+            android:src="@drawable/center" />
     </LinearLayout>
 
 </RelativeLayout>

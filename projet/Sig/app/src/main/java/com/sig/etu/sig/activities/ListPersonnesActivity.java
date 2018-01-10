@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -53,7 +54,7 @@ public class ListPersonnesActivity extends AppCompatActivity {
             public void onClick(View view) {
 
                 //Filtre search
-                String search =  ((TextView)findViewById(R.id.search)).getText()+"";
+                String search =  ((EditText)findViewById(R.id.search)).getText().toString()+"";
                 entries = datasource.getPersonneByName(search);
 
                 //Filtre search fail
@@ -78,6 +79,7 @@ public class ListPersonnesActivity extends AppCompatActivity {
                                 datasource.getAllMetiers(),
                                 entries).toCsvData());
                 Intent intent = new Intent(ListPersonnesActivity.this, MapActivity.class);
+                intent.putExtra(MapActivity.EXTRA_TYPE, "");
                 intent.putExtra(MapActivity.EXTRA_NOM, "");
                 intent.putExtra(MapActivity.EXTRA_DESCRIPTION, "");
                 intent.putExtra(MapActivity.EXTRA_LATITUDE, "");
@@ -97,6 +99,7 @@ public class ListPersonnesActivity extends AppCompatActivity {
                 Personne ent = (Personne)o;
                 Personne envoi = datasource.getPersonneByAdresse(ent.getAdresse());
                 Intent intent = new Intent(ListPersonnesActivity.this, MapActivity.class);
+                intent.putExtra(MapActivity.EXTRA_TYPE, "personne");
                 intent.putExtra(MapActivity.EXTRA_NOM, envoi.getNom());
                 intent.putExtra(MapActivity.EXTRA_DESCRIPTION,envoi.getAdresse());
                 intent.putExtra(MapActivity.EXTRA_LATITUDE, envoi.getLatitude()+"");

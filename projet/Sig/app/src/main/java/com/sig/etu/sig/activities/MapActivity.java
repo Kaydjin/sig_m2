@@ -83,6 +83,7 @@ public class MapActivity extends AppCompatActivity implements LocationListener {
     //Permet l'ajout de point cabinet sur la carte
     ArrayList<OverlayItem> cabinets = new ArrayList<>();
 
+    public static final String EXTRA_TYPE= "type";
     public static final String EXTRA_NOM = "nom";
     public static final String EXTRA_DESCRIPTION = "description";
     public static final String EXTRA_LATITUDE = "latitude";
@@ -117,6 +118,7 @@ public class MapActivity extends AppCompatActivity implements LocationListener {
 
 
         Intent intent = getIntent();
+        String type = intent.getStringExtra(MapActivity.EXTRA_TYPE)+"";
         String nom = intent.getStringExtra(MapActivity.EXTRA_NOM)+"";
         String description = intent.getStringExtra(MapActivity.EXTRA_DESCRIPTION)+"";
         String latitude = intent.getStringExtra(MapActivity.EXTRA_LATITUDE)+"";
@@ -124,11 +126,14 @@ public class MapActivity extends AppCompatActivity implements LocationListener {
         String lieux = intent.getStringExtra(MapActivity.EXTRA_LIEUX)+"";
         String personnes = intent.getStringExtra(MapActivity.EXTRA_PERSONNES)+"";
 
+        datasource = new BDDManager(this);
         //Demande d'affichage d'un seul point.
         if(lieux.equals("")&& personnes.equals("")) {
-            batiments.add(creerPointInteret(nom, description, Float.valueOf(latitude), Float.valueOf(longitude)));
+            if(type.equals("personne"))
+                cabinets.add(creerPointInteretPersonne(nom, description, Float.valueOf(latitude), Float.valueOf(longitude)));
+            else
+                batiments.add(creerPointInteret(nom, description, Float.valueOf(latitude), Float.valueOf(longitude)));
         }else{
-            datasource = new BDDManager(this);
             datasource.open();
             if(!lieux.equals("")) {
                 try {
@@ -347,8 +352,11 @@ public class MapActivity extends AppCompatActivity implements LocationListener {
 
                         TextView map_popup_distance = (TextView) dialog.findViewById(R.id.map_popup_distance);
                         float[] distance = new float[1];
+
                         Location.distanceBetween(location.getLatitude(), location.getLongitude(), item.getPoint().getLatitude(), item.getPoint().getLongitude(), distance);
-                        map_popup_distance.setText(distance[0]*0.001 + " km");
+                        //On cast en int pour arrondir
+                        int distanceArrondi = (int)distance[0];
+                        map_popup_distance.setText(distanceArrondi*0.001 + " km");
 
                         //On route un button pour que l'utilisateur puissent calculer son trajet en gps :
 
@@ -362,6 +370,7 @@ public class MapActivity extends AppCompatActivity implements LocationListener {
                             }
                         });
 
+                        //Boutton pour ajouter une nouvelle personne pour ce batiment
                         ImageButton map_popup_buttonAddPersonn =  (ImageButton) dialog.findViewById(R.id.map_popup_buttonAddPersonn);
                         map_popup_buttonAddPersonn.setOnClickListener(new View.OnClickListener() {
                             @Override
@@ -395,6 +404,35 @@ public class MapActivity extends AppCompatActivity implements LocationListener {
 
                                 overlayEvents = new MapEventsOverlay(mReceive);
                                 map.getOverlays().add(overlayEvents);
+                            }
+                        });
+
+                        //Button pour afficher les différentes personnes affiliés à ce batiment
+                        ImageButton map_popup_buttonAfficherPersonne = (ImageButton) dialog.findViewById(R.id.map_popup_buttonAfficherPersonne);
+                        map_popup_buttonAfficherPersonne.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                //Quand on click dessus on affiche le batiment auxquelles la personne est reliée
+                                datasource.open();
+                                Batiment batiment = datasource.getBatimentByName(item.getTitle());
+                                List<Personne> personnes =  datasource.getPersonnesByBatiment(batiment.getId());
+
+                                ArrayList<OverlayItem> tmp = new ArrayList<>();
+                                for (Personne p: personnes) {
+                                    tmp.add(creerPointInteretPersonne(p.getNom(),
+                                            p.getAdresse()
+                                            , p.getLatitude(),p.getLongitude()));
+                                }
+
+                                //affichage du batiment sur la carte
+                                affichePointInteretPersonne(ctx,tmp);
+
+                                datasource.close();
+
+                                dialog.cancel();//On retire l'affichage
+
+                                Toast.makeText(ctx, "Localisation des personnes terminé", Toast.LENGTH_LONG).show();
+
                             }
                         });
 
@@ -436,7 +474,12 @@ public class MapActivity extends AppCompatActivity implements LocationListener {
                                         else
                                         {
                                             Toast.makeText(ctx, "distance="+road.mLength+" km", Toast.LENGTH_LONG).show();
-                                            Toast.makeText(ctx, "durée="+(road.mDuration/3600d)+ " h", Toast.LENGTH_LONG).show();
+                                            //On convertie correctement le nbr d'heure
+                                            int heure=0;
+                                            int min=0;
+                                            heure = (int)(road.mDuration/3600d);
+                                            min = (int)( (road.mDuration/60d) - (heure*60));
+                                            Toast.makeText(ctx, "durée="+heure+ " h "+min+" min", Toast.LENGTH_LONG).show();
                                             roadOverlay = RoadManager.buildRoadOverlay(road);
                                             map.getOverlays().add(roadOverlay);
                                         }
@@ -492,7 +535,7 @@ public class MapActivity extends AppCompatActivity implements LocationListener {
 
                         dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
                         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-                        dialog.setContentView(R.layout.custom_dialog);
+                        dialog.setContentView(R.layout.custom_dialog_personn);
 
                         dialog.setCancelable(true);
 
@@ -505,14 +548,35 @@ public class MapActivity extends AppCompatActivity implements LocationListener {
                         TextView map_popup_distance = (TextView) dialog.findViewById(R.id.map_popup_distance);
                         float[] distance = new float[1];
                         Location.distanceBetween(location.getLatitude(), location.getLongitude(), item.getPoint().getLatitude(), item.getPoint().getLongitude(), distance);
-                        map_popup_distance.setText(distance[0] + " m");
+                        map_popup_distance.setText((int)distance[0] + " m");
+
+                        ImageButton map_popup_buttonAfficherPersonne = (ImageButton) dialog.findViewById(R.id.map_popup_buttonAfficherPersonne);
+                        map_popup_buttonAfficherPersonne.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                //Quand on click dessus on affiche le batiment auxquelles la personne est reliée
+                                datasource.open();
+                                Personne personne = datasource.getPersonneByAdresse(item.getSnippet());
+                                Batiment batiment = datasource.getBatiment(personne.getId_batiment());
 
 
-                        //On masque ces deux bouttons
-                        ImageButton map_popup_buttonGps = (ImageButton) dialog.findViewById(R.id.map_popup_buttonGps);
-                        map_popup_buttonGps.setVisibility(View.GONE);
-                        ImageButton map_popup_buttonAddPersonn =  (ImageButton) dialog.findViewById(R.id.map_popup_buttonAddPersonn);
-                        map_popup_buttonAddPersonn.setVisibility(View.GONE);
+                                //affichage du batiment sur la carte
+                                ArrayList<OverlayItem> tmp = new ArrayList<>();
+                                tmp.add(creerPointInteret(batiment.getNom(),
+                                        batiment.getAdresse()+ "\n" +
+                                                batiment.getTelephone()
+                                        , batiment.getLatitude(),batiment.getLongitude()));
+                                affichePointInteret(ctx,tmp);
+
+                                datasource.close();
+
+                                dialog.cancel();//On retire l'affichage
+
+                                Toast.makeText(ctx, "Localisation du batiment terminé", Toast.LENGTH_LONG).show();
+
+                            }
+                        });
+
 
                         map.getController().setCenter(item.getPoint()); // On centre dessus :)
                         dialog.show(); //ON N'OUBLIE PAS L'AFFICHAGE !
@@ -625,8 +689,7 @@ public class MapActivity extends AppCompatActivity implements LocationListener {
 
                 ArrayList<OverlayItem> personne = new ArrayList<>();
                 personne.add(creerPointInteretPersonne(nom,
-                        adresse + "\n" +
-                                metier
+                        adresse
                         , coord_new_point.getLatitude(),coord_new_point.getLongitude()));
 
 

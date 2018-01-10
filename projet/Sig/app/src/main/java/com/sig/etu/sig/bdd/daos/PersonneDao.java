@@ -137,6 +137,29 @@ public class PersonneDao {
     }
 
     /**
+     * Useful method which returns all the personnes in the database with a certain id batiment
+     * @param id_batiment
+     * @return the personnes as a List collection
+     */
+    public List<Personne> getByBatiment(Integer id_batiment) {
+        List<Personne> entries = new ArrayList<Personne>();
+
+        Cursor cursor = database.query(PersonneTable.NAME_TABLE,
+                PersonneTable.allcolumns,
+                PersonneTable.KEY_COL_ID_BATIMENT + " = " + id_batiment, null, null, null, null);
+
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()) {
+            Personne entry = this.valueOf(cursor);
+            entries.add(entry);
+            cursor.moveToNext();
+        }
+        // assurez-vous de la fermeture du curseur
+        cursor.close();
+        return entries;
+    }
+
+    /**
      * Useful method which returns all the personnes in the database.
      * @return the personnes as a List collection
      */

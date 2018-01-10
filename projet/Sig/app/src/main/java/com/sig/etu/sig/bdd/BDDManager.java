@@ -120,6 +120,9 @@ public class BDDManager {
     public List<Batiment> getAllBatiments(){ return batimentDao.getAll();}
     public List<Metier> getAllMetiers(){ return metierDao.getAll();}
     public List<Personne> getAllPersonnes(){ return personneDao.getAll();}
+    public List<Personne> getPersonnesByBatiment(Integer id_batiment){
+        return personneDao.getByBatiment(id_batiment);
+    }
     public List<Ville> getAllVilles(){ return villeDao.getAll();}
     public List<TypeBatiment> getAllTypesBatiments(){ return typeBatimentDao.getAll();}
 

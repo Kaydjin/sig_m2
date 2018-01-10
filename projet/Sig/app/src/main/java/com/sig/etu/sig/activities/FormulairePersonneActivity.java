@@ -16,6 +16,7 @@ import com.sig.etu.sig.R;
 import com.sig.etu.sig.bdd.BDDManager;
 import com.sig.etu.sig.modeles.Batiment;
 import com.sig.etu.sig.modeles.Metier;
+import com.sig.etu.sig.util.StringFormat;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -123,7 +124,7 @@ public class FormulairePersonneActivity extends AppCompatActivity {
         Metier metier = datasource.getMetierByName(choixType);
         Batiment batiment = datasource.getBatimentByName(nomBatiment);
 
-        datasource.createPersonne(nom, adresse, batiment.getId(), metier.getId(), latitude, longitude);
+        datasource.createPersonne(nom, StringFormat.correction(adresse), batiment.getId(), metier.getId(), latitude, longitude);
 
         datasource.close();
 

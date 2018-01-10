@@ -19,6 +19,7 @@ import com.sig.etu.sig.R;
 import com.sig.etu.sig.bdd.BDDManager;
 import com.sig.etu.sig.modeles.TypeBatiment;
 import com.sig.etu.sig.modeles.Ville;
+import com.sig.etu.sig.util.StringFormat;
 
 import org.osmdroid.google.wrapper.GeoPoint;
 
@@ -146,10 +147,11 @@ public class FormulaireActivity extends AppCompatActivity {
                 datasource.close();
                 return false;
             }
-            tmpVille = datasource.createVille(tmp, ville);
+            tmpVille = datasource.createVille(tmp, StringFormat.correction(ville));
         }
         TypeBatiment typeBatiment = datasource.getTypeBatimentByName(type);
-        datasource.createBatiment(typeBatiment.getId(),tmpVille.getId(),latitude,longitude,nom,adresse,telephone);
+        datasource.createBatiment(typeBatiment.getId(),tmpVille.getId(),
+                latitude,longitude,nom,StringFormat.correction(adresse),telephone);
 
         datasource.close();
 
