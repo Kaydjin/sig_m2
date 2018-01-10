@@ -117,11 +117,30 @@ public class BDDManager {
         return utilisateurDao.get(nom, mdp)!=null;
     }
 
-    public List<Batiment> getAllBatiments(){ return batimentDao.getAll();}
+    public List<Batiment> getAllBatiments(){
+        List<Batiment> batiments = batimentDao.getAll();
+        for(Batiment b : batiments) {
+            b.setType(typeBatimentDao.get(b.getId_type()).getType());
+            b.setVille(villeDao.get(b.getId_ville()).getNom());
+        }
+        return batiments;
+    }
     public List<Metier> getAllMetiers(){ return metierDao.getAll();}
-    public List<Personne> getAllPersonnes(){ return personneDao.getAll();}
+    public List<Personne> getAllPersonnes(){
+        List<Personne> personnes = personneDao.getAll();
+        for(Personne p : personnes) {
+            p.setNom_metier(metierDao.get(p.getId_metier()).getNom());
+            p.setNom_batiment_travail(batimentDao.get(p.getId_batiment()).getNom());
+        }
+        return personnes;
+    }
     public List<Personne> getPersonnesByBatiment(Integer id_batiment){
-        return personneDao.getByBatiment(id_batiment);
+        List<Personne> personnes = personneDao.getByBatiment(id_batiment);
+        for(Personne p : personnes) {
+            p.setNom_metier(metierDao.get(p.getId_metier()).getNom());
+            p.setNom_batiment_travail(batimentDao.get(p.getId_batiment()).getNom());
+        }
+        return personnes;
     }
     public List<Ville> getAllVilles(){ return villeDao.getAll();}
     public List<TypeBatiment> getAllTypesBatiments(){ return typeBatimentDao.getAll();}
@@ -134,11 +153,20 @@ public class BDDManager {
             if(this.getVille(b.getId_ville()).getCode_postale().equals(code+""))
                 finaux.add(b);
 
+        for(Batiment b : finaux) {
+            b.setType(typeBatimentDao.get(b.getId_type()).getType());
+            b.setVille(villeDao.get(b.getId_ville()).getNom());
+        }
         return finaux;
     }
     public List<Batiment> getBatimentsFilterType(String choixType) {
         Integer id = this.getTypeBatimentByName(choixType).getId();
-        return batimentDao.getByType(id);
+        List<Batiment> finaux = batimentDao.getByType(id);
+        for(Batiment b : finaux) {
+            b.setType(typeBatimentDao.get(b.getId_type()).getType());
+            b.setVille(villeDao.get(b.getId_ville()).getNom());
+        }
+        return finaux;
     }
     public List<Batiment> getBatimentsFilterDepartement(Integer code) {
         List<Batiment> entries = this.getAllBatiments();
@@ -147,13 +175,28 @@ public class BDDManager {
             if(this.getVille(b.getId_ville()).getCode_postale().equals(code+""))
                 finaux.add(b);
 
+        for(Batiment b : finaux) {
+            b.setType(typeBatimentDao.get(b.getId_type()).getType());
+            b.setVille(villeDao.get(b.getId_ville()).getNom());
+        }
         return finaux;
     }
 
-    public Batiment getBatiment(int id_entry){ return batimentDao.get(id_entry);}
+    public Batiment getBatiment(int id_entry){
+        Batiment b = batimentDao.get(id_entry);
+        b.setType(typeBatimentDao.get(b.getId_type()).getType());
+        b.setVille(villeDao.get(b.getId_ville()).getNom());
+        return b;
+    }
     public Metier getMetier(int id_entry){ return metierDao.get(id_entry);}
     public Metier getMetierByName(String name){ return metierDao.getByName(name);}
-    public Personne getPersonne(int id_entry){ return personneDao.get(id_entry);}
+    public Personne getPersonne(int id_entry){
+        Personne p = personneDao.get(id_entry);
+        p.setNom_metier(metierDao.get(p.getId_metier()).getNom());
+        p.setNom_batiment_travail(batimentDao.get(p.getId_batiment()).getNom());
+
+        return p;
+    }
     public TypeBatiment getTypeBatiment(int id_entry){ return typeBatimentDao.get(id_entry);}
     public TypeBatiment getTypeBatimentByName(String name){ return typeBatimentDao.getByName(name);}
     public Ville getVille(int id_entry){ return villeDao.get(id_entry);}
@@ -205,11 +248,19 @@ public class BDDManager {
     }
 
     public Personne getPersonneByAdresse(String adresse) {
-        return personneDao.getByAddress(adresse);
+        Personne p = personneDao.getByAddress(adresse);
+        p.setNom_metier(metierDao.get(p.getId_metier()).getNom());
+        p.setNom_batiment_travail(batimentDao.get(p.getId_batiment()).getNom());
+        return p;
     }
 
     public List<Personne> getPersonneByName(String name) {
-        return personneDao.getByName(name);
+        List<Personne> personnes = personneDao.getByName(name);
+        for(Personne p : personnes) {
+            p.setNom_metier(metierDao.get(p.getId_metier()).getNom());
+            p.setNom_batiment_travail(batimentDao.get(p.getId_batiment()).getNom());
+        }
+        return personnes;
     }
 
     public Batiment getBatimentByName(String nom) {
