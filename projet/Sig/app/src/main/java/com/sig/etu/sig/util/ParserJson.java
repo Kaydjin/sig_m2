@@ -13,7 +13,7 @@ public class ParserJson {
 			"ville", "telephone", "latitude", "longitude"
 	};
 	
-	private final static String[] header_personnes = { "nom", "adresse", "batiment", "metier"};
+	private final static String[] header_personnes = { "nom", "adresse", "batiment", "metier", "latitude", "longitude"};
 	
 	/**
 	 * Parse from a csv lines format to a usable json string format.

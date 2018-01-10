@@ -65,7 +65,7 @@ public class MetierDao {
     }
 
     /**
-     * Get one batiment of the database
+     * Get one metier of the database
      */
     public Metier get(int id_entry){
         long id = id_entry;
@@ -73,6 +73,22 @@ public class MetierDao {
         Cursor cursor = database.query(MetierTable.NAME_TABLE,
                 MetierTable.allcolumns,
                 MetierTable.KEY_COL_ID + " = " + id, null, null, null, null);
+
+        if(cursor.moveToFirst())
+            entry = this.valueOf(cursor);
+
+        cursor.close();
+        return entry;
+    }
+
+    /**
+     * Get one metier of the database
+     */
+    public Metier getByName(String name){
+        Metier entry = null;
+        Cursor cursor = database.query(MetierTable.NAME_TABLE,
+                MetierTable.allcolumns,
+                MetierTable.KEY_COL_NOM + " = " + "'" + name + "'", null, null, null, null);
 
         if(cursor.moveToFirst())
             entry = this.valueOf(cursor);

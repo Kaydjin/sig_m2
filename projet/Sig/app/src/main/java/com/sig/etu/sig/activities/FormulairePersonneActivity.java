@@ -14,6 +14,7 @@ import android.widget.Spinner;
 
 import com.sig.etu.sig.R;
 import com.sig.etu.sig.bdd.BDDManager;
+import com.sig.etu.sig.modeles.Batiment;
 import com.sig.etu.sig.modeles.Metier;
 
 import java.util.ArrayList;
@@ -27,6 +28,10 @@ public class FormulairePersonneActivity extends AppCompatActivity {
 
     private BDDManager datasource;
     private String choixType;
+    private String nomBatiment;
+    private double latitude;
+    private double longitude;
+
     private Spinner edit_Metier;
 
     @Override
@@ -35,6 +40,11 @@ public class FormulairePersonneActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_formulaire_personne);
         final Context ctx = getApplicationContext();
+
+        Intent intent = getIntent();
+        nomBatiment = intent.getStringExtra("batiment");
+        latitude = intent.getDoubleExtra("latitude",0);
+        longitude = intent.getDoubleExtra("longitude",0);
 
         datasource = new BDDManager(this);
         datasource.open();
@@ -77,11 +87,15 @@ public class FormulairePersonneActivity extends AppCompatActivity {
                     EditText edit_Adresse = (EditText) findViewById(R.id.edit_Adresse);
                     //On a deja le spinner
 
-                    returnIntent.putExtra("Nom",edit_Nom.getText().toString());
-                    returnIntent.putExtra("Adresse",edit_Adresse.getText().toString());
-                    returnIntent.putExtra("Metier",choixType);;
+                    if(saveInBDD(edit_Nom.getText().toString(),edit_Adresse.getText().toString())) {
+                        returnIntent.putExtra("Nom", edit_Nom.getText().toString());
+                        returnIntent.putExtra("Adresse", edit_Adresse.getText().toString());
+                        returnIntent.putExtra("Metier", choixType);
 
-                    setResult(FormulaireActivity.RESULT_OK,returnIntent);
+                        setResult(FormulairePersonneActivity.RESULT_OK, returnIntent);
+                    }else{
+                        setResult(FormulairePersonneActivity.RESULT_CANCELED, returnIntent);
+                    }
                     finish();
                 }
             }
@@ -95,11 +109,26 @@ public class FormulairePersonneActivity extends AppCompatActivity {
 
                 Intent returnIntent = new Intent();
 
-                setResult(FormulaireActivity.RESULT_CANCELED,returnIntent);
+                setResult(FormulairePersonneActivity.RESULT_CANCELED,returnIntent);
                 finish();
 
             }
         });
+    }
+
+    private boolean saveInBDD(String nom, String adresse)
+    {
+        datasource.open();
+
+        Metier metier = datasource.getMetierByName(choixType);
+        Batiment batiment = datasource.getBatimentByName(nomBatiment);
+
+        datasource.createPersonne(nom, adresse, batiment.getId(), metier.getId(), latitude, longitude);
+
+        datasource.close();
+
+
+        return true;
     }
 
     private boolean verifierEditTextNonVide()

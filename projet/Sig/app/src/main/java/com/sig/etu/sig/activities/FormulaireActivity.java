@@ -18,6 +18,9 @@ import android.widget.TextView;
 import com.sig.etu.sig.R;
 import com.sig.etu.sig.bdd.BDDManager;
 import com.sig.etu.sig.modeles.TypeBatiment;
+import com.sig.etu.sig.modeles.Ville;
+
+import org.osmdroid.google.wrapper.GeoPoint;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,12 +34,18 @@ public class FormulaireActivity extends AppCompatActivity {
     private BDDManager datasource;
     private String choixType;
     private Spinner edit_Type;
+    private double latitude;
+    private double longitude;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_formulaire);
         final Context ctx = getApplicationContext();
+
+        final Intent intent = getIntent();
+        latitude = intent.getDoubleExtra("latitude", 0);
+        longitude = intent.getDoubleExtra("longitude", 0);
 
         /**Pour la partie du spinner**/
         //We used the database
@@ -86,14 +95,20 @@ public class FormulaireActivity extends AppCompatActivity {
                     EditText edit_Ville = (EditText) findViewById(R.id.edit_Ville);
                     //Le type est deja recuperer
 
-                    returnIntent.putExtra("Nom",edit_Nom.getText().toString());
-                    returnIntent.putExtra("Adresse",edit_Adresse.getText().toString());
-                    returnIntent.putExtra("CodePostale",edit_CodePostale.getText().toString());
-                    returnIntent.putExtra("Telephone",edit_Telephone.getText().toString());
-                    returnIntent.putExtra("Type",choixType);
-                    returnIntent.putExtra("Ville",edit_Ville.getText().toString());
+                    if(saveInBDD(edit_Nom.getText().toString(), edit_Adresse.getText().toString(), edit_CodePostale.getText().toString(), edit_Telephone.getText().toString(),choixType,edit_Ville.getText().toString()))
+                    {
+                        returnIntent.putExtra("Nom",edit_Nom.getText().toString());
+                        returnIntent.putExtra("Adresse",edit_Adresse.getText().toString());
+                        returnIntent.putExtra("CodePostale",edit_CodePostale.getText().toString());
+                        returnIntent.putExtra("Telephone",edit_Telephone.getText().toString());
+                        returnIntent.putExtra("Type",choixType);
+                        returnIntent.putExtra("Ville",edit_Ville.getText().toString());
 
-                    setResult(FormulaireActivity.RESULT_OK,returnIntent);
+                        setResult(FormulaireActivity.RESULT_OK,returnIntent);
+
+                    }
+                    else
+                        setResult(FormulaireActivity.RESULT_CANCELED,returnIntent);
                     finish();
                 }
             }
@@ -112,6 +127,34 @@ public class FormulaireActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    private boolean saveInBDD(String nom, String adresse, String codePostale, String telephone, String type, String ville)
+    {
+        datasource.open();
+        //On vérifie que la ville n'existe pas deja dans la BDD
+        Ville tmpVille = datasource.getVilleByName(ville);
+        if(tmpVille == null)
+        {
+            String tmp ="";
+            codePostale = codePostale.trim();
+            if(codePostale.length() > 4)
+                tmp = codePostale.substring(0,2);
+            else if (codePostale.length() == 4)
+                tmp = codePostale.substring(0,1);
+            else {
+                datasource.close();
+                return false;
+            }
+            tmpVille = datasource.createVille(tmp, ville);
+        }
+        TypeBatiment typeBatiment = datasource.getTypeBatimentByName(type);
+        datasource.createBatiment(typeBatiment.getId(),tmpVille.getId(),latitude,longitude,nom,adresse,telephone);
+
+        datasource.close();
+
+
+        return true;
     }
 
     private boolean verifierEditTextNonVide()

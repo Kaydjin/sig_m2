@@ -149,6 +149,7 @@ public class BDDManager {
 
     public Batiment getBatiment(int id_entry){ return batimentDao.get(id_entry);}
     public Metier getMetier(int id_entry){ return metierDao.get(id_entry);}
+    public Metier getMetierByName(String name){ return metierDao.getByName(name);}
     public Personne getPersonne(int id_entry){ return personneDao.get(id_entry);}
     public TypeBatiment getTypeBatiment(int id_entry){ return typeBatimentDao.get(id_entry);}
     public TypeBatiment getTypeBatimentByName(String name){ return typeBatimentDao.getByName(name);}

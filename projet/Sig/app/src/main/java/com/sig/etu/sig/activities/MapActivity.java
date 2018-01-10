@@ -26,6 +26,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.sig.etu.sig.R;
+import com.sig.etu.sig.bdd.BDDManager;
 import com.sig.etu.sig.modeles.Batiment;
 import com.sig.etu.sig.modeles.Metier;
 import com.sig.etu.sig.modeles.Personne;
@@ -61,6 +62,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MapActivity extends AppCompatActivity implements LocationListener {
+    private BDDManager datasource;
     MapView map;
     CompassOverlay mCompassOverlay;
     GeoPoint paris = new GeoPoint(48.866667,2.333333);
@@ -71,15 +73,15 @@ public class MapActivity extends AppCompatActivity implements LocationListener {
     Polyline polyline = null;
     Polyline roadOverlay = null;
 
-    final CharSequence textButton_AjoutRepere_Ajouter = " ON";
-    final CharSequence textButton_AjoutRepere_Annuler = " OFF ";
+    final CharSequence textButton_AjoutRepere_Ajouter = " ON ";
+    final CharSequence textButton_AjoutRepere_Annuler = " Annuler ";
 
     MapEventsOverlay overlayEvents = null;
 
-    //Permet l'ajout de point sur la carte
-    ArrayList<OverlayItem> items = new ArrayList<>();
-    //Point ajouter par l'utilisateur
-    ArrayList<OverlayItem> personnel = new ArrayList<>();
+    //Permet l'ajout de point batiment sur la carte
+    ArrayList<OverlayItem> batiments = new ArrayList<>();
+    //Permet l'ajout de point cabinet sur la carte
+    ArrayList<OverlayItem> cabinets = new ArrayList<>();
 
     public static final String EXTRA_NOM = "nom";
     public static final String EXTRA_DESCRIPTION = "description";
@@ -124,19 +126,21 @@ public class MapActivity extends AppCompatActivity implements LocationListener {
 
         //Demande d'affichage d'un seul point.
         if(lieux.equals("")&& personnes.equals("")) {
-            items.add(creerPointInteret(nom, description, Float.valueOf(latitude), Float.valueOf(longitude)));
+            batiments.add(creerPointInteret(nom, description, Float.valueOf(latitude), Float.valueOf(longitude)));
         }else{
+            datasource = new BDDManager(this);
+            datasource.open();
             if(!lieux.equals("")) {
                 try {
                     JSONObject json = new JSONObject(lieux);
                     List<String[]> datas = ParserJson.parseLieuxFrom(json);
                     ArrayList<Batiment> batiments = new ArrayList<Batiment>();
                     ParserCsvLieux pcl = new ParserCsvLieux(',', batiments,
-                            new ArrayList<Ville>(), new ArrayList<TypeBatiment>());
+                            datasource.getAllVilles(), datasource.getAllTypesBatiments());
                     pcl.fromCsvData(datas);
 
                     for (Batiment b : batiments) {
-                        items.add(creerPointInteret(b.getNom(),
+                        this.batiments.add(creerPointInteret(b.getNom(),
                                 b.getAdresse() + "\n"
                                         + b.getTelephone(), b.getLatitude(), b.getLongitude()));
                     }
@@ -149,21 +153,24 @@ public class MapActivity extends AppCompatActivity implements LocationListener {
                     JSONObject json = new JSONObject(personnes);
                     List<String[]> datas = ParserJson.parsePersonnesFrom(json);
                     ArrayList<Personne> pers = new ArrayList<Personne>();
-                    ParserCsvPersonnes pcl = new ParserCsvPersonnes(',', new ArrayList<Batiment>(),
-                            new ArrayList<Metier>(), pers);
+                    ParserCsvPersonnes pcl = new ParserCsvPersonnes(',', datasource.getAllBatiments(),
+                            datasource.getAllMetiers(), pers);
                     pcl.fromCsvData(datas);
 
+                    Log.e("Json personne", pers.size() +" ");
                     for (Personne p : pers) {
-                        items.add(creerPointInteret(p.getNom(),
+                        cabinets.add(creerPointInteretPersonne(p.getNom(),
                                 p.getAdresse(), p.getLatitude(), p.getLongitude()));
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
             }
+            datasource.close();
 
         }
-        affichePointInteret(ctx,items);
+        affichePointInteret(ctx, batiments);
+        affichePointInteretPersonne(ctx, cabinets);
 
 
 
@@ -242,6 +249,8 @@ public class MapActivity extends AppCompatActivity implements LocationListener {
                             //Toast.makeText(getBaseContext(),p.getLatitude() + " - "+p.getLongitude(),Toast.LENGTH_LONG).show();
                             coord_new_point = p;
                             Intent intent = new Intent(ctx, FormulaireActivity.class);
+                            intent.putExtra("latitude", p.getLatitude());
+                            intent.putExtra("longitude", p.getLongitude());
                             startActivityForResult(intent, 0);
 
                             return false;
@@ -362,10 +371,30 @@ public class MapActivity extends AppCompatActivity implements LocationListener {
 
                                 Toast.makeText(ctx, "Ajouter un affilié", Toast.LENGTH_LONG).show();
 
-                                //TODO garder en mémoire le nom du batiment selectionner* + action cliquer sur la carte* + "button cancel"
-                                /*Intent intent = new Intent(ctx, FormulairePersonneActivity.class);
-                                 startActivityForResult(intent, 1);*/
+                                Button buttonAddPoint = (Button) findViewById(R.id.ButtonAddPoint);
+                                buttonAddPoint.setText(textButton_AjoutRepere_Annuler);
+                                MapEventsReceiver mReceive = new MapEventsReceiver() {
+                                    @Override
+                                    public boolean singleTapConfirmedHelper(GeoPoint p) {
 
+                                        coord_new_point = p;
+                                        Intent intent = new Intent(ctx, FormulairePersonneActivity.class);
+                                        intent.putExtra("latitude", p.getLatitude());
+                                        intent.putExtra("longitude", p.getLongitude());
+                                        intent.putExtra("batiment", item.getTitle());
+                                        startActivityForResult(intent, 1);
+
+                                        return false;
+                                    }
+
+                                    @Override
+                                    public boolean longPressHelper(GeoPoint p) {
+                                        return false;
+                                    }
+                                };
+
+                                overlayEvents = new MapEventsOverlay(mReceive);
+                                map.getOverlays().add(overlayEvents);
                             }
                         });
 
@@ -478,6 +507,16 @@ public class MapActivity extends AppCompatActivity implements LocationListener {
                         Location.distanceBetween(location.getLatitude(), location.getLongitude(), item.getPoint().getLatitude(), item.getPoint().getLongitude(), distance);
                         map_popup_distance.setText(distance[0] + " m");
 
+
+                        //On masque ces deux bouttons
+                        ImageButton map_popup_buttonGps = (ImageButton) dialog.findViewById(R.id.map_popup_buttonGps);
+                        map_popup_buttonGps.setVisibility(View.GONE);
+                        ImageButton map_popup_buttonAddPersonn =  (ImageButton) dialog.findViewById(R.id.map_popup_buttonAddPersonn);
+                        map_popup_buttonAddPersonn.setVisibility(View.GONE);
+
+                        map.getController().setCenter(item.getPoint()); // On centre dessus :)
+                        dialog.show(); //ON N'OUBLIE PAS L'AFFICHAGE !
+
                     }
 
                     @Override
@@ -565,19 +604,20 @@ public class MapActivity extends AppCompatActivity implements LocationListener {
                 String ville = data.getStringExtra("Ville");
                 String type = data.getStringExtra("Type");
 
+                ArrayList<OverlayItem> personnel = new ArrayList<>();
                 personnel.add(creerPointInteret(nom,
                                 adresse + "\n" +
                                 telephone
                         , coord_new_point.getLatitude(),coord_new_point.getLongitude()));
                 affichePointInteret(getApplicationContext(),personnel);
-
-                //TODO récuperer les autres informations
             }
             //Sinon on ne fait rien
         }
         if (requestCode == 1) {
-            if(requestCode == RESULT_OK)
+            Log.e("onActivityResult", "requestion Code 1");
+            if(resultCode == RESULT_OK)
             {
+                Log.e("onActivityResult", "RESULT_OK Code 1");
                 String nom = data.getStringExtra("Nom");
                 String adresse = data.getStringExtra("Adresse");
                 String metier = data.getStringExtra("Metier");
@@ -591,8 +631,21 @@ public class MapActivity extends AppCompatActivity implements LocationListener {
 
 
                 affichePointInteretPersonne(getApplicationContext(),personne);
+
             }
             //Sinon on ne fait rien
+
+
+            //On retire la possibilité d'ajouter de nouveau pour ce batiment
+            Button buttonAddPoint = (Button) findViewById(R.id.ButtonAddPoint);
+            buttonAddPoint.setText(textButton_AjoutRepere_Ajouter);
+
+            if(overlayEvents != null)
+            {
+                map.getOverlays().remove(overlayEvents);
+                overlayEvents = null;
+            }
         }
+        Log.e("onActivityResult", "fin onActivityResult");
     }
 }
